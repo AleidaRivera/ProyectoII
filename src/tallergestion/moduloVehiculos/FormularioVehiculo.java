@@ -6,6 +6,11 @@ package tallergestion.moduloVehiculos;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -37,7 +42,7 @@ public class FormularioVehiculo extends javax.swing.JPanel {
         lblModelo = new javax.swing.JLabel();
         txtModelo = new javax.swing.JTextField();
         lblAño = new javax.swing.JLabel();
-        txtaño = new javax.swing.JTextField();
+        txtAño = new javax.swing.JTextField();
         lblPlaca = new javax.swing.JLabel();
         txtPlaca = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
@@ -66,7 +71,7 @@ public class FormularioVehiculo extends javax.swing.JPanel {
         lblAño.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblAño.setText("Año");
         add(lblAño);
-        add(txtaño);
+        add(txtAño);
 
         lblPlaca.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblPlaca.setText("Placa");
@@ -76,6 +81,11 @@ public class FormularioVehiculo extends javax.swing.JPanel {
         btnGuardar.setBackground(new java.awt.Color(0, 255, 204));
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
         add(btnGuardar);
 
         btnCerrar.setBackground(new java.awt.Color(255, 51, 51));
@@ -101,6 +111,10 @@ public class FormularioVehiculo extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnCerrarActionPerformed
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+      registrarVehiculo();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
@@ -111,10 +125,49 @@ public class FormularioVehiculo extends javax.swing.JPanel {
     private javax.swing.JLabel lblMensaje;
     private javax.swing.JLabel lblModelo;
     private javax.swing.JLabel lblPlaca;
+    private javax.swing.JTextField txtAño;
     private javax.swing.JTextField txtIdCliente;
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtModelo;
     private javax.swing.JTextField txtPlaca;
-    private javax.swing.JTextField txtaño;
     // End of variables declaration//GEN-END:variables
+
+    private void registrarVehiculo() {
+      try {
+        int idCliente = Integer.parseInt(txtIdCliente.getText().trim());
+        String placa = txtPlaca.getText().trim();
+        String marca = txtMarca.getText().trim();
+        String modelo = txtModelo.getText().trim();
+        int anio = Integer.parseInt(txtAño.getText().trim());
+
+        if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos.");
+            return;
+        }
+
+      
+        FileWriter fw = new FileWriter("vehiculos.txt", true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter pw = new PrintWriter(bw);
+        pw.println(idCliente + "," + placa + "," + marca + "," + modelo + "," + anio);
+        pw.close();
+
+        JOptionPane.showMessageDialog(this, "Vehículo registrado exitosamente.");
+
+        limpiarCamposVehiculo();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "ID o año inválido.");
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar el vehículo.");
+    }
+    }
+
+    private void limpiarCamposVehiculo() {
+    txtIdCliente.setText("");
+    txtPlaca.setText("");
+    txtMarca.setText("");
+    txtModelo.setText("");
+    txtAño.setText("");
+    }
 }

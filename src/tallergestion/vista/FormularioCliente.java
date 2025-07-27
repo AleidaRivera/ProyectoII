@@ -4,6 +4,11 @@ package tallergestion.vista;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class FormularioCliente extends javax.swing.JPanel {
@@ -11,24 +16,7 @@ public class FormularioCliente extends javax.swing.JPanel {
    
     public FormularioCliente() {
         initComponents();
-  
-    btnRegistrar.addActionListener((ActionEvent e) -> {
-    String nombre = txtNombre.getText().trim();
-    String telefono = txtTelefono.getText().trim();
-    String direccion = txtDireccion.getText().trim();
-
-    if (nombre.isEmpty() || telefono.isEmpty()) {
-        lblMensaje.setText(" Nombre y teléfono son obligatorios");
-    } else {
-        lblMensaje.setText(" Cliente registrado: " + nombre);
-        // Aquí se debera  agregar lógica para guardar los .txt
-        txtNombre.setText("");
-        txtTelefono.setText("");
-        txtDireccion.setText("");
-    }
-});
-
-        
+ 
         
         
         
@@ -40,9 +28,9 @@ public class FormularioCliente extends javax.swing.JPanel {
     private void initComponents() {
 
         lblID1 = new javax.swing.JLabel();
-        lblID = new javax.swing.JLabel();
+        txtIdCliente = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        txtNombre = new java.awt.TextField();
+        txtNombreCliente = new java.awt.TextField();
         jLabel2 = new javax.swing.JLabel();
         txtTelefono = new java.awt.TextField();
         jLabel3 = new javax.swing.JLabel();
@@ -57,15 +45,13 @@ public class FormularioCliente extends javax.swing.JPanel {
         lblID1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblID1.setText("ID Cliente");
         add(lblID1);
-
-        lblID.setText("----");
-        add(lblID);
+        add(txtIdCliente);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Nombre");
         add(jLabel1);
-        add(txtNombre);
-        txtNombre.getAccessibleContext().setAccessibleName("txtNombre");
+        add(txtNombreCliente);
+        txtNombreCliente.getAccessibleContext().setAccessibleName("txtNombre");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Telefono");
@@ -105,7 +91,7 @@ public class FormularioCliente extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
+         registraCliente();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
@@ -125,11 +111,46 @@ public class FormularioCliente extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblID1;
     private javax.swing.JLabel lblMensaje;
     private java.awt.TextField txtDireccion;
-    private java.awt.TextField txtNombre;
+    private javax.swing.JTextField txtIdCliente;
+    private java.awt.TextField txtNombreCliente;
     private java.awt.TextField txtTelefono;
     // End of variables declaration//GEN-END:variables
+
+    private void registraCliente() {
+      String id = txtIdCliente.getText().trim();
+    String nombre = txtNombreCliente.getText().trim();
+    String telefono = txtTelefono.getText().trim();
+    String direccion = txtDireccion.getText().trim();
+
+    // Validaciones básicas
+    if (id.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+        return;
+    }
+
+    try {
+       
+        FileWriter fw = new FileWriter("clientes.txt", true); // true = modo append
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter pw = new PrintWriter(bw);
+
+        
+        pw.println(id + "," + nombre + ","  + telefono + "," + direccion);
+
+        pw.close();
+        JOptionPane.showMessageDialog(this, "Cliente registrado correctamente.");
+
+       
+        txtIdCliente.setText("");
+        txtNombreCliente.setText("");
+        txtTelefono.setText("");
+        txtDireccion.setText("");
+
+     }catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar el cliente: " + e.getMessage());
+     }
+    }
 }

@@ -36,10 +36,7 @@
         <Property name="text" type="java.lang.String" value="ID Cliente"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblID">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="----"/>
-      </Properties>
+    <Component class="javax.swing.JTextField" name="txtIdCliente">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -49,7 +46,7 @@
         <Property name="text" type="java.lang.String" value="Nombre"/>
       </Properties>
     </Component>
-    <Component class="java.awt.TextField" name="txtNombre">
+    <Component class="java.awt.TextField" name="txtNombreCliente">
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="txtNombre"/>
       </AccessibilityProperties>

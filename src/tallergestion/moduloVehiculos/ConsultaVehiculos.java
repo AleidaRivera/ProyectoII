@@ -3,6 +3,11 @@ package tallergestion.moduloVehiculos;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -41,7 +46,6 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
 
         TablaVehiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"209680157", "Mischubichi", "L200", "2020", "CL 320167"},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -52,7 +56,15 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
             new String [] {
                 "ID Cliente", "Marca", "Modelo", "Año", "Placa"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(TablaVehiculos);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -108,6 +120,11 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         btnBuscar.setBackground(new java.awt.Color(153, 204, 255));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnBuscar);
         jPanel2.add(txtBuscarCliente);
 
@@ -127,6 +144,10 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+      buscarAutoPorId();
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -149,4 +170,11 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
     private javax.swing.JTextField txtModelo;
     private javax.swing.JTextField txtPlaca;
     // End of variables declaration//GEN-END:variables
+
+    private void buscarAutoPorId() {
+       
+    }
+
+   
+    
 }
