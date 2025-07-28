@@ -3,7 +3,13 @@ package tallergestion.moduloServicios;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 
 public class AsociarServicioOrden extends javax.swing.JPanel {
@@ -29,11 +35,10 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
         comboOrdenes = new javax.swing.JComboBox<>();
         btnCargarOrden = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaServicios = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         btnAsociarServicio = new javax.swing.JButton();
         btnCerrarAsociar = new javax.swing.JButton();
-        lblResultado = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Orden de Servicio", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 24))); // NOI18N
         setLayout(new java.awt.BorderLayout());
@@ -56,27 +61,26 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"se marcaran los servicios a vincular.", null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Seleccionar", "ID Servicio", "Tipo", "Descripción", "Prioridad", "Estado"
+                "ID Servicio ", "Descripcion", "Tipo"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setHeaderValue("Seleccionar");
-            jTable1.getColumnModel().getColumn(1).setHeaderValue("ID Servicio");
-            jTable1.getColumnModel().getColumn(2).setHeaderValue("Tipo");
-            jTable1.getColumnModel().getColumn(3).setHeaderValue("Descripción");
-            jTable1.getColumnModel().getColumn(4).setHeaderValue("Prioridad");
-            jTable1.getColumnModel().getColumn(5).setHeaderValue("Estado");
-        }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaServicios);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,6 +115,11 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
         btnAsociarServicio.setBackground(new java.awt.Color(153, 255, 255));
         btnAsociarServicio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAsociarServicio.setText("Asociar Servicio");
+        btnAsociarServicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAsociarServicioActionPerformed(evt);
+            }
+        });
 
         btnCerrarAsociar.setBackground(new java.awt.Color(255, 102, 102));
         btnCerrarAsociar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -120,8 +129,6 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
                 btnCerrarAsociarActionPerformed(evt);
             }
         });
-
-        lblResultado.setText("3 servicios fueron vinculados exitosamente (Este es un ejemplo de lo que mostraria este label)");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -133,10 +140,6 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCerrarAsociar, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(158, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(lblResultado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,9 +148,7 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAsociarServicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCerrarAsociar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(66, 66, 66))
         );
 
         add(jPanel3, java.awt.BorderLayout.LINE_START);
@@ -170,6 +171,10 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnCerrarAsociarActionPerformed
 
+    private void btnAsociarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsociarServicioActionPerformed
+       asociarOrden(); 
+    }//GEN-LAST:event_btnAsociarServicioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsociarServicio;
@@ -179,8 +184,48 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblOrden;
-    private javax.swing.JLabel lblResultado;
+    private javax.swing.JTable tablaServicios;
     // End of variables declaration//GEN-END:variables
+
+    private void asociarOrden() {
+       
+    String ordenSeleccionada = (String) comboOrdenes.getSelectedItem();
+    if (ordenSeleccionada == null || ordenSeleccionada.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una orden.");
+        return;
+    }
+
+    
+    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+
+   
+    ArrayList<String> serviciosSeleccionados = new ArrayList<>();
+
+    
+    for (int i = 0; i < modelo.getRowCount(); i++) {
+        Boolean estaSeleccionado = (Boolean) modelo.getValueAt(i, 0); 
+        if (estaSeleccionado != null && estaSeleccionado) {
+            String idServicio = modelo.getValueAt(i, 1).toString(); 
+            serviciosSeleccionados.add(idServicio);
+        }
+    }
+
+    if (serviciosSeleccionados.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No ha seleccionado ningún servicio.");
+        return;
+    }
+
+    // Guardar asociación orden - servicios en archivo (append)
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden_servicios.txt", true))) {
+        for (String idServicio : serviciosSeleccionados) {
+            String linea = ordenSeleccionada + "," + idServicio;
+            bw.write(linea);
+            bw.newLine();
+        }
+        JOptionPane.showMessageDialog(this, "Servicios asociados correctamente.");
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
+    }
+    }
 }

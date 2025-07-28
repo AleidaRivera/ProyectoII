@@ -11,8 +11,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 
 public class ConsultaClientes extends javax.swing.JPanel {
@@ -28,7 +31,7 @@ public class ConsultaClientes extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaClientes = new javax.swing.JTable();
+        tablaClientes = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         lblID = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
@@ -49,7 +52,7 @@ public class ConsultaClientes extends javax.swing.JPanel {
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Consultar Clientes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 24))); // NOI18N
         setLayout(new java.awt.BorderLayout(2, 2));
 
-        TablaClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null}
@@ -66,7 +69,7 @@ public class ConsultaClientes extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(TablaClientes);
+        jScrollPane1.setViewportView(tablaClientes);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -117,6 +120,11 @@ public class ConsultaClientes extends javax.swing.JPanel {
         btnEliminar.setBackground(new java.awt.Color(255, 255, 0));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnEliminar);
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
@@ -149,67 +157,165 @@ public class ConsultaClientes extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
-         String idBuscar = txtBuscarCliente.getText().trim();
-    boolean encontrado = false;
+      String idBuscar = txtBuscarCliente.getText().trim();
+
+    if (idBuscar.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID de cliente.");
+        return;
+    }
 
     File archivo = new File("clientes.txt");
-
     if (!archivo.exists()) {
         JOptionPane.showMessageDialog(this, "No hay clientes registrados.");
         return;
     }
+
+    DefaultTableModel modelo = (DefaultTableModel) tablaClientes.getModel();
+    modelo.setRowCount(0); // Limpia la tabla antes de mostrar resultados
+
+    boolean encontrado = false;
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+
+            if (datos.length >= 4 && datos[0].equals(idBuscar)) {
+                String id = datos[0];
+                String nombre = datos[1];
+                String telefono = datos[2];
+                String direccion = datos[3];
+
+                modelo.addRow(new Object[]{id, nombre, telefono, direccion});
+                encontrado = true;
+                break; // Salimos tras encontrar cliente
+            }
+        }
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(this, "Cliente no encontrado.");
+        }
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage());
+    }
+        
     }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-    String idMod = txtId.getText().trim();
-    String nuevoNombre = txtNombre.getText().trim();
-    String nuevoTelefono = txtTelefono.getText().trim();
-    String nuevaDireccion = txtDireccion.getText().trim();
+    String id = txtId.getText().trim();
+    String nombre = txtNombre.getText().trim();
+    String telefono = txtTelefono.getText().trim();
+    String direccion = txtDireccion.getText().trim();
 
-    if (idMod.isEmpty() || nuevoNombre.isEmpty() || nuevoTelefono.isEmpty() || nuevaDireccion.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.");
+    if (id.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
     File archivo = new File("clientes.txt");
-    File archivoTemp = new File("clientes_temp.txt");
-    boolean modificado = false;
-
-    try (BufferedReader br = new BufferedReader(new FileReader(archivo));
-         BufferedWriter bw = new BufferedWriter(new FileWriter(archivoTemp))) {
-        
-        String linea;
-        while ((linea = br.readLine()) != null) {
-            String[] datos = linea.split(",");
-            if (datos.length >= 4 && datos[0].equals(idMod)) {
-                bw.write(idMod + "," + nuevoNombre + "," + nuevoTelefono + "," + nuevaDireccion);
-                modificado = true;
-            } else {
-                // Escribe la línea tal cual
-                bw.write(linea);
-            }
-            bw.newLine();
-        }
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
+    if (!archivo.exists()) {
+        JOptionPane.showMessageDialog(this, "No existe el archivo clientes.txt", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    if (archivo.delete()) {
-        archivoTemp.renameTo(archivo);
-    }
+    try {
+        List<String> lineas = new ArrayList<>();
+        boolean encontrado = false;
 
-    if (modificado) {
-        JOptionPane.showMessageDialog(this, "Cliente modificado con éxito.");
-        
-    } else {
-        JOptionPane.showMessageDialog(this, "No se encontró el cliente a modificar.");
+        BufferedReader br = new BufferedReader(new FileReader(archivo));
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+            if (partes.length >= 4) {
+                String idCliente = partes[0];
+                if (idCliente.equals(id)) {
+                    
+                    linea = id + "," + nombre + "," + telefono + "," + direccion;
+                    encontrado = true;
+                }
+            }
+            lineas.add(linea);
+        }
+        br.close();
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(this, "Cliente con ID " + id + " no encontrado.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+       
+        BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+        for (String l : lineas) {
+            bw.write(l);
+            bw.newLine();
+        }
+        bw.close();
+
+        JOptionPane.showMessageDialog(this, "Cliente modificado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "Error al modificar el cliente: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnModificarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        String id = txtId.getText().trim();
+
+    if (id.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese el ID del cliente a eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    File archivo = new File("clientes.txt");
+    if (!archivo.exists()) {
+        JOptionPane.showMessageDialog(this, "El archivo clientes.txt no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        List<String> lineas = new ArrayList<>();
+        boolean encontrado = false;
+
+        BufferedReader br = new BufferedReader(new FileReader(archivo));
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+            if (partes.length >= 1) {
+                String idCliente = partes[0];
+                if (idCliente.equals(id)) {
+                    // No agregamos esta línea para eliminarla
+                    encontrado = true;
+                    continue;
+                }
+            }
+            lineas.add(linea);
+        }
+        br.close();
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(this, "Cliente con ID " + id + " no encontrado.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Sobrescribir archivo sin la línea eliminada
+        BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+        for (String l : lineas) {
+            bw.write(l);
+            bw.newLine();
+        }
+        bw.close();
+
+        JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        // Aquí podrías actualizar la tabla o limpiar campos
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "Error al eliminar el cliente: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_btnEliminarActionPerformed
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TablaClientes;
     private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEliminar;
@@ -222,6 +328,7 @@ public class ConsultaClientes extends javax.swing.JPanel {
     private javax.swing.JLabel ltxtDireccion;
     private javax.swing.JLabel ltxtNombre;
     private javax.swing.JLabel ltxtTelefono;
+    private javax.swing.JTable tablaClientes;
     private javax.swing.JTextField txtBuscarCliente;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtId;
@@ -229,3 +336,6 @@ public class ConsultaClientes extends javax.swing.JPanel {
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }
+    
+
+

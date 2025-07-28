@@ -2,6 +2,11 @@
 package tallergestion.ModuloOrdenesdeTrabajo;
 
 import java.awt.CardLayout;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import tallergestion.moduloServicios.AsociarServicioOrden;
 
 
@@ -22,18 +27,12 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         lblCliente = new javax.swing.JLabel();
         ComboClientes = new javax.swing.JComboBox<>();
-        btnBuscarCliente = new javax.swing.JButton();
-        lblErrorCliente = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         lblVehiculo = new javax.swing.JLabel();
         ComboVehiculos = new javax.swing.JComboBox<>();
-        btnValidarVehiculo = new javax.swing.JButton();
-        lblErrorVehiculo = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        btnServiciosrealizados = new javax.swing.JButton();
-        ComboServicios = new javax.swing.JComboBox<>();
         tablaServiciosSeleccionados = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaCliente = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         lblFechaIngreso = new javax.swing.JLabel();
         txtFechaIngreso = new javax.swing.JTextField();
@@ -54,18 +53,12 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         jPanel1.add(lblCliente);
 
         ComboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(ComboClientes);
-
-        btnBuscarCliente.setText("Buscar");
-        btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
+        ComboClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarClienteActionPerformed(evt);
+                ComboClientesActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBuscarCliente);
-
-        lblErrorCliente.setText("--");
-        jPanel1.add(lblErrorCliente);
+        jPanel1.add(ComboClientes);
 
         add(jPanel1);
 
@@ -78,34 +71,12 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         ComboVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel2.add(ComboVehiculos);
 
-        btnValidarVehiculo.setText("Validar");
-        jPanel2.add(btnValidarVehiculo);
-
-        lblErrorVehiculo.setText("--");
-        jPanel2.add(lblErrorVehiculo);
-
         add(jPanel2);
 
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
 
-        btnServiciosrealizados.setBackground(new java.awt.Color(102, 255, 204));
-        btnServiciosrealizados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnServiciosrealizados.setText("Servicio realizados");
-        btnServiciosrealizados.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        btnServiciosrealizados.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        btnServiciosrealizados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnServiciosrealizadosActionPerformed(evt);
-            }
-        });
-        jPanel3.add(btnServiciosrealizados);
-
-        ComboServicios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel3.add(ComboServicios);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Integer(1), "pintura", "pintar carro",  new Double(50000.0), "media"},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null}
@@ -115,14 +86,21 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        tablaServiciosSeleccionados.setViewportView(jTable1);
+        tablaServiciosSeleccionados.setViewportView(tablaCliente);
 
         jPanel3.add(tablaServiciosSeleccionados);
 
@@ -161,44 +139,69 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         add(jPanel4);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarClienteActionPerformed
-
-    private void btnServiciosrealizadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnServiciosrealizadosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnServiciosrealizadosActionPerformed
-
     private void btnRegistrarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarOrdenActionPerformed
     
 
     }//GEN-LAST:event_btnRegistrarOrdenActionPerformed
 
+    private void ComboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboClientesActionPerformed
+    
+    }//GEN-LAST:event_ComboClientesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboClientes;
-    private javax.swing.JComboBox<String> ComboServicios;
     private javax.swing.JComboBox<String> ComboVehiculos;
-    private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnRegistrarOrden;
-    private javax.swing.JButton btnServiciosrealizados;
-    private javax.swing.JButton btnValidarVehiculo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblCosto;
-    private javax.swing.JLabel lblErrorCliente;
-    private javax.swing.JLabel lblErrorVehiculo;
     private javax.swing.JLabel lblFechaEntrega;
     private javax.swing.JLabel lblFechaIngreso;
     private javax.swing.JLabel lblMensConf;
     private javax.swing.JLabel lblVehiculo;
+    private javax.swing.JTable tablaCliente;
     private javax.swing.JScrollPane tablaServiciosSeleccionados;
     private javax.swing.JTextField txtCostoTotal;
     private javax.swing.JTextField txtFechaEntrega;
     private javax.swing.JTextField txtFechaIngreso;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarCliente() {
+    String seleccionado = (String) ComboClientes.getSelectedItem();
+
+    if (seleccionado == null || seleccionado.equals("Seleccione un cliente")) {
+        return;
+    }
+
+    // Obtener solo el ID (antes del guion)
+    String idSeleccionado = seleccionado.split("-")[0].trim();
+
+    try (BufferedReader br = new BufferedReader(new FileReader("clientes.txt"))) {
+        String linea;
+        DefaultTableModel modelo = (DefaultTableModel) tablaCliente.getModel();
+        modelo.setRowCount(0); 
+
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+            if (partes.length >= 4) {
+                String id = partes[0].trim();
+                if (id.equals(idSeleccionado)) {
+                    String nombre = partes[1].trim();
+                    String telefono = partes[2].trim();
+                    String direccion = partes[3].trim();
+
+                    Object[] fila = { id, nombre, telefono, direccion };
+                    modelo.addRow(fila);
+                    break;
+                }
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer cliente: " + e.getMessage());
+    }
+    }
 }

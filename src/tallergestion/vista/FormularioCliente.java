@@ -48,8 +48,14 @@ public class FormularioCliente extends javax.swing.JPanel {
         add(txtIdCliente);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Nombre");
+        jLabel1.setText("Nombre Completo");
         add(jLabel1);
+
+        txtNombreCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreClienteActionPerformed(evt);
+            }
+        });
         add(txtNombreCliente);
         txtNombreCliente.getAccessibleContext().setAccessibleName("txtNombre");
 
@@ -104,6 +110,10 @@ public class FormularioCliente extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnCerrarActionPerformed
 
+    private void txtNombreClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreClienteActionPerformed
+      
+    }//GEN-LAST:event_txtNombreClienteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
@@ -120,37 +130,31 @@ public class FormularioCliente extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void registraCliente() {
-      String id = txtIdCliente.getText().trim();
+   
+    String id = txtIdCliente.getText().trim();
     String nombre = txtNombreCliente.getText().trim();
     String telefono = txtTelefono.getText().trim();
     String direccion = txtDireccion.getText().trim();
 
-    // Validaciones básicas
     if (id.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
         return;
     }
 
-    try {
-       
-        FileWriter fw = new FileWriter("clientes.txt", true); // true = modo append
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter pw = new PrintWriter(bw);
+    try (FileWriter fw = new FileWriter("clientes.txt", true);
+         BufferedWriter bw = new BufferedWriter(fw);
+         PrintWriter pw = new PrintWriter(bw)) {
 
-        
-        pw.println(id + "," + nombre + ","  + telefono + "," + direccion);
-
-        pw.close();
+        pw.println(id + "," + nombre + "," + telefono + "," + direccion);
         JOptionPane.showMessageDialog(this, "Cliente registrado correctamente.");
 
-       
         txtIdCliente.setText("");
         txtNombreCliente.setText("");
         txtTelefono.setText("");
         txtDireccion.setText("");
 
-     }catch (IOException e) {
+    } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Error al guardar el cliente: " + e.getMessage());
-     }
+    }
     }
 }

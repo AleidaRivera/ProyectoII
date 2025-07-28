@@ -1,9 +1,7 @@
 
 package tallergestion.moduloServicios;
 
-import java.awt.CardLayout;
-import java.awt.Container;
-import javax.swing.JPanel;
+
 
 
 public class FormularioServicio extends javax.swing.JPanel {
@@ -20,18 +18,14 @@ public class FormularioServicio extends javax.swing.JPanel {
 
         grupoEstado = new javax.swing.ButtonGroup();
         lblTipo = new javax.swing.JLabel();
-        comboTipoServicio = new javax.swing.JComboBox<>();
+        jTextField3 = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        lblPrioridad = new javax.swing.JLabel();
-        comboPrioridad = new javax.swing.JComboBox<>();
-        lblEstado = new javax.swing.JLabel();
-        rbtnActivo = new javax.swing.JRadioButton();
-        lblMensaje = new javax.swing.JLabel();
-        rbtnInactivo = new javax.swing.JRadioButton();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
-        btnCerrar = new javax.swing.JButton();
+        lblMensaje = new javax.swing.JLabel();
+        btnCerrar1 = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro de Servicio", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
         setLayout(new java.awt.GridLayout(7, 2));
@@ -39,103 +33,66 @@ public class FormularioServicio extends javax.swing.JPanel {
         lblTipo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTipo.setText("Tipo de Servicio");
         add(lblTipo);
-
-        comboTipoServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mecanica", "Pintura", "Revision", "Otros" }));
-        comboTipoServicio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboTipoServicioActionPerformed(evt);
-            }
-        });
-        add(comboTipoServicio);
+        add(jTextField3);
 
         lblDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblDescripcion.setText("Descripcion");
         add(lblDescripcion);
+        add(jTextField1);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Hola Muguiwaras!!");
-        jScrollPane1.setViewportView(jTextArea1);
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("ID Servicio");
+        add(jLabel1);
+        add(jTextField2);
 
-        add(jScrollPane1);
-
-        lblPrioridad.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblPrioridad.setText("Prioridad");
-        add(lblPrioridad);
-
-        comboPrioridad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alta", "Media", "baja" }));
-        comboPrioridad.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setBackground(new java.awt.Color(0, 102, 102));
+        btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setText("Guardar Servicio");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboPrioridadActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
-        add(comboPrioridad);
-
-        lblEstado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblEstado.setText("Estado");
-        add(lblEstado);
-
-        rbtnActivo.setBackground(new java.awt.Color(255, 255, 255));
-        grupoEstado.add(rbtnActivo);
-        rbtnActivo.setText("Activo");
-        add(rbtnActivo);
+        add(btnGuardar);
         add(lblMensaje);
 
-        rbtnInactivo.setBackground(new java.awt.Color(255, 255, 255));
-        grupoEstado.add(rbtnInactivo);
-        rbtnInactivo.setText("Inactivo");
-        add(rbtnInactivo);
-
-        btnGuardar.setBackground(new java.awt.Color(153, 255, 255));
-        btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        btnGuardar.setText("Guardar Servicio");
-        add(btnGuardar);
-
-        btnCerrar.setBackground(new java.awt.Color(255, 102, 102));
-        btnCerrar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        btnCerrar.setText("Cerrar");
-        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+        btnCerrar1.setBackground(new java.awt.Color(255, 102, 102));
+        btnCerrar1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnCerrar1.setText("Cerrar");
+        btnCerrar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarActionPerformed(evt);
+                btnCerrar1ActionPerformed(evt);
             }
         });
-        add(btnCerrar);
+        add(btnCerrar1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comboPrioridadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPrioridadActionPerformed
+    private void btnCerrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrar1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_comboPrioridadActionPerformed
+    }//GEN-LAST:event_btnCerrar1ActionPerformed
 
-    private void comboTipoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoServicioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboTipoServicioActionPerformed
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-        Container contenedor = FormularioServicio.this.getParent();
-        if (contenedor instanceof JPanel) {
-        CardLayout cl = (CardLayout) contenedor.getLayout();
-        cl.show(contenedor, "inicio");
-}
-
-        
-    }//GEN-LAST:event_btnCerrarActionPerformed
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCerrar;
+    private javax.swing.JButton btnCerrar1;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> comboPrioridad;
-    private javax.swing.JComboBox<String> comboTipoServicio;
     private javax.swing.ButtonGroup grupoEstado;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lblDescripcion;
-    private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblMensaje;
-    private javax.swing.JLabel lblPrioridad;
     private javax.swing.JLabel lblTipo;
-    private javax.swing.JRadioButton rbtnActivo;
-    private javax.swing.JRadioButton rbtnInactivo;
     // End of variables declaration//GEN-END:variables
+
+   
+   
+    
+
+    
 }
