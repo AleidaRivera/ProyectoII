@@ -180,70 +180,66 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
 
     private void ComboClientesYVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboClientesYVehiculosActionPerformed
     
-     ComboClientesYVehiculos.removeAllItems();
-     ComboClientesYVehiculos.addItem("-- Seleccione Cliente y Vehículo --");
-    
-    File archivoClientes = new File("clientes.txt");
-    File archivoVehiculos = new File("vehiculos.txt");
-    
-    if (!archivoClientes.exists()) {
-         ComboClientesYVehiculos.addItem("No hay clientes registrados");
-        return;
-    }
-    
-    try (BufferedReader brClientes = new BufferedReader(new FileReader(archivoClientes))) {
-        String lineaCliente;
-        
-        while ((lineaCliente = brClientes.readLine()) != null) {
-            String[] datosCliente = lineaCliente.split(",");
-            if (datosCliente.length >= 2) {
-                String idCliente = datosCliente[0].trim();
-                String nombreCliente = datosCliente[1].trim();
-                
-               
-             ComboClientesYVehiculos.addItem("*" + idCliente + " - " + nombreCliente);
-                
-                if (archivoVehiculos.exists()) {
-                    try (BufferedReader brVehiculos = new BufferedReader(new FileReader(archivoVehiculos))) {
-                        String lineaVehiculo;
-                        boolean tieneVehiculos = false;
-                        
-                        while ((lineaVehiculo = brVehiculos.readLine()) != null) {
-                            String[] datosVehiculo = lineaVehiculo.split(",");
-                            
-                            if (datosVehiculo.length >= 5 && datosVehiculo[1].trim().equals(idCliente)) {
-                                String placa = datosVehiculo[2].trim();
-                                String marca = datosVehiculo[3].trim();
-                                String modelo = datosVehiculo[4].trim();
-                                String año = datosVehiculo.length > 5 ? datosVehiculo[5].trim() : "";
-                                
-                              
-                                ComboClientesYVehiculos.addItem("    🚗 " + placa + " - " + marca + " " + modelo + " " + año);
-                                tieneVehiculos = true;
-                            }
-                        }
-                        
-                        if (!tieneVehiculos) {
-                           ComboClientesYVehiculos.addItem("️Sin vehículos registrados");
-                        }
-                        
-                    } catch (IOException e) {
-                        ComboClientesYVehiculos.addItem("Error al cargar vehículos");
-                    }
-                } else {
-                     ComboClientesYVehiculos.addItem("No existe archivo de vehículos");
-                }
-                
-                // Agregar separador visual
-                 ComboClientesYVehiculos.addItem("────────────────────────────");
-            }
-        }
-        
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
-    }
-    }//GEN-LAST:event_ComboClientesYVehiculosActionPerformed
+      ComboClientesYVehiculos.removeAllItems();
+      ComboClientesYVehiculos.addItem("-- Seleccione Cliente y Vehículo --");
 
+      File archivoClientes = new File("clientes.txt");
+      File archivoVehiculos = new File("vehiculos.txt");
+
+if (!archivoClientes.exists()) {
+    ComboClientesYVehiculos.addItem("No hay clientes registrados");
+    return;
+}
+
+try (BufferedReader brClientes = new BufferedReader(new FileReader(archivoClientes))) {
+    String lineaCliente;
+    
+    while ((lineaCliente = brClientes.readLine()) != null) {
+        String[] datosCliente = lineaCliente.split(",");
+        if (datosCliente.length >= 2) {
+            String idCliente = datosCliente[0].trim();
+            String nombreCliente = datosCliente[1].trim();
+            
+            ComboClientesYVehiculos.addItem("*" + idCliente + " - " + nombreCliente);
+            
+            if (archivoVehiculos.exists()) {
+                try (BufferedReader brVehiculos = new BufferedReader(new FileReader(archivoVehiculos))) {
+                    String lineaVehiculo;
+                    boolean tieneVehiculos = false;
+                    
+                    while ((lineaVehiculo = brVehiculos.readLine()) != null) {
+                        String[] datosVehiculo = lineaVehiculo.split(",");
+                           
+                        if (datosVehiculo.length >= 5 && datosVehiculo[0].trim().equals(idCliente)) {
+                            String placa = datosVehiculo[1].trim();
+                            String marca = datosVehiculo[2].trim();
+                            String modelo = datosVehiculo[3].trim();
+                            String año = datosVehiculo[4].trim(); 
+                            
+                            ComboClientesYVehiculos.addItem("**" + placa + " - " + marca + " " + modelo + " " + año);
+                            tieneVehiculos = true;
+                        }
+                    }
+                    
+                    if (!tieneVehiculos) {
+                        ComboClientesYVehiculos.addItem("️Sin vehículos registrados");
+                    }
+                    
+                } catch (IOException e) {
+                    ComboClientesYVehiculos.addItem("Error al cargar vehículos");
+                }
+            } else {
+                ComboClientesYVehiculos.addItem("No existe archivo de vehículos");
+            }
+            
+            ComboClientesYVehiculos.addItem("────────────────────────────");
+        }
+    }
+    
+} catch (IOException e) {
+    JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+    }//GEN-LAST:event_ComboClientesYVehiculosActionPerformed
+    }
     private void btnCargarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarServicioActionPerformed
           cargarServicios();
     }//GEN-LAST:event_btnCargarServicioActionPerformed
@@ -306,21 +302,20 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         
         while ((linea = br.readLine()) != null) {
             String[] datos = linea.split(",");
-            // Formato esperado: id,nombre,descripcion,precio,tipo,estado
+            
             if (datos.length >= 4) {
                 String id = datos[0].trim();
                 String nombre = datos[1].trim();
                 String descripcion = datos[2].trim();
                 String precio = datos[3].trim();
                 
-                // Agregar fila a la tabla
-                // Columnas: Num, Servicio, Descripcion, Precio, Prioridad
+             
                 modelo.addRow(new Object[]{
-                    numero++,           // Num (auto-incrementado)
-                    nombre,            // Servicio
-                    descripcion,       // Descripcion
-                    Double.parseDouble(precio), // Precio
-                    false              // Prioridad (checkbox sin marcar)
+                    numero++,           
+                    nombre,          
+                    descripcion,      
+                    Double.parseDouble(precio), 
+                    false             
                 });
             }
         }

@@ -4,12 +4,8 @@ package tallergestion.moduloVehiculos;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -146,47 +142,40 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnBuscarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVehiculoActionPerformed
-       String idTexto = txtIdCliente.getText().trim();
-
+      String idTexto = txtIdCliente.getText().trim();
     if (idTexto.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Debe ingresar un ID de cliente.");
         return;
     }
-
     try {
         int idCliente = Integer.parseInt(idTexto);
         DefaultTableModel modelo = (DefaultTableModel) tablaVehiculos.getModel();
         modelo.setRowCount(0);
-
         try (BufferedReader br = new BufferedReader(new FileReader("vehiculos.txt"))) {
             String linea;
             boolean encontrado = false;
-
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
                 if (datos.length >= 5) {
                     int idArchivo = Integer.parseInt(datos[0]);
-
                     if (idArchivo == idCliente) {
-                        String id = datos[1];
+                        String placa = datos[1];      // CAMBIO: ahora es placa
                         String marca = datos[2];
                         String modeloVeh = datos[3];
                         String anio = datos[4];
-
-                        modelo.addRow(new Object[]{id, marca, modeloVeh, anio});
+                        // CAMBIO: agregar con el ID del cliente y la placa en su lugar correcto
+                        modelo.addRow(new Object[]{idArchivo, marca, modeloVeh, anio, placa});
+                        //                         ↑ ID Cliente    ↑ Marca ↑ Modelo ↑ Año ↑ Placa
                         encontrado = true;
                     }
                 }
             }
-
             if (!encontrado) {
                 JOptionPane.showMessageDialog(this, "No se encontraron vehículos para este cliente.");
             }
-
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage());
         }
-
     } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(this, "El ID debe ser un número.");
     }

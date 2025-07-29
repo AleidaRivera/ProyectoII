@@ -132,31 +132,34 @@ public class FormularioCliente extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void registraCliente() {
-   
-    String id = txtIdCliente.getText().trim();
-    String nombre = txtNombreCliente.getText().trim();
-    String telefono = txtTelefono.getText().trim();
-    String direccion = txtDireccion.getText().trim();
+   String idTexto = txtIdCliente.getText().trim();
+   String nombre = txtNombreCliente.getText().trim();
+   String telefono = txtTelefono.getText().trim();
+   String direccion = txtDireccion.getText().trim();
 
-    if (id.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
-        return;
+    if (idTexto.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+    return;
     }
 
+    try {
+    int id = Integer.parseInt(idTexto); 
+    
     try (FileWriter fw = new FileWriter("clientes.txt", true);
          BufferedWriter bw = new BufferedWriter(fw);
          PrintWriter pw = new PrintWriter(bw)) {
-
         pw.println(id + "," + nombre + "," + telefono + "," + direccion);
         JOptionPane.showMessageDialog(this, "Cliente registrado correctamente.");
-
         txtIdCliente.setText("");
         txtNombreCliente.setText("");
         txtTelefono.setText("");
         txtDireccion.setText("");
-
     } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Error al guardar el cliente: " + e.getMessage());
     }
+    
+    } catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "El ID debe ser un número válido.");
+  }
     }
 }

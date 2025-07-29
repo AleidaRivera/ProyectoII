@@ -139,23 +139,19 @@ public class FormularioVehiculo extends javax.swing.JPanel {
         String marca = txtMarca.getText().trim();
         String modelo = txtModelo.getText().trim();
         int anio = Integer.parseInt(txtAño.getText().trim());
-
+        
         if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Complete todos los campos.");
             return;
         }
-
       
         FileWriter fw = new FileWriter("vehiculos.txt", true);
         BufferedWriter bw = new BufferedWriter(fw);
         PrintWriter pw = new PrintWriter(bw);
         pw.println(idCliente + "," + placa + "," + marca + "," + modelo + "," + anio);
         pw.close();
-
         JOptionPane.showMessageDialog(this, "Vehículo registrado exitosamente.");
-
         limpiarCamposVehiculo();
-
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "ID o año inválido.");
     } catch (IOException e) {
