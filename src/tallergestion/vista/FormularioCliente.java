@@ -45,6 +45,8 @@ public class FormularioCliente extends javax.swing.JPanel {
         lblID1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblID1.setText("ID Cliente");
         add(lblID1);
+
+        txtIdCliente.setBackground(new java.awt.Color(255, 255, 255));
         add(txtIdCliente);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N

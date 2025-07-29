@@ -2,11 +2,17 @@
 package tallergestion.moduloServicios;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Container;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -31,89 +37,53 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        lblOrden = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         comboOrdenes = new javax.swing.JComboBox<>();
-        btnCargarOrden = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaServicios = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
+        modeloServicios = new javax.swing.JTable();
         btnAsociarServicio = new javax.swing.JButton();
         btnCerrarAsociar = new javax.swing.JButton();
+        btnCargarServicios = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Orden de Servicio", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 24))); // NOI18N
-        setLayout(new java.awt.BorderLayout());
 
-        lblOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblOrden.setText("Seleccione la Orden");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Orden De Trabajo ");
 
-        comboOrdenes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "aqui debe mostrar la lista de órdenes activas" }));
         comboOrdenes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboOrdenesActionPerformed(evt);
             }
         });
 
-        btnCargarOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnCargarOrden.setText("Cargar Servicios Disponibles");
-        btnCargarOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCargarOrdenActionPerformed(evt);
-            }
-        });
-
-        tablaServicios.setModel(new javax.swing.table.DefaultTableModel(
+        modeloServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null}
             },
             new String [] {
-                "ID Servicio ", "Descripcion", "Tipo"
+                "Mecanica", "Pintura", "Revision", "Otros"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
             };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tablaServicios);
+        jScrollPane1.setViewportView(modeloServicios);
+        if (modeloServicios.getColumnModel().getColumnCount() > 0) {
+            modeloServicios.getColumnModel().getColumn(0).setResizable(false);
+            modeloServicios.getColumnModel().getColumn(1).setResizable(false);
+            modeloServicios.getColumnModel().getColumn(2).setResizable(false);
+            modeloServicios.getColumnModel().getColumn(3).setResizable(false);
+        }
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboOrdenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(btnCargarOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboOrdenes))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCargarOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        add(jPanel1, java.awt.BorderLayout.NORTH);
-
-        btnAsociarServicio.setBackground(new java.awt.Color(153, 255, 255));
+        btnAsociarServicio.setBackground(new java.awt.Color(0, 102, 102));
         btnAsociarServicio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnAsociarServicio.setForeground(new java.awt.Color(255, 255, 255));
         btnAsociarServicio.setText("Asociar Servicio");
         btnAsociarServicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,6 +93,7 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
 
         btnCerrarAsociar.setBackground(new java.awt.Color(255, 102, 102));
         btnCerrarAsociar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCerrarAsociar.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrarAsociar.setText("Cerrar");
         btnCerrarAsociar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,37 +101,80 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
             }
         });
 
+        btnCargarServicios.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCargarServicios.setText("Servicios");
+        btnCargarServicios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarServiciosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboOrdenes, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnCerrarAsociar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAsociarServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCargarServicios, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))
+                .addGap(67, 67, 67))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboOrdenes, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCerrarAsociar)
+                    .addComponent(btnAsociarServicio)
+                    .addComponent(btnCargarServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(91, 91, 91)
-                .addComponent(btnAsociarServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCerrarAsociar, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(158, Short.MAX_VALUE))
+            .addGap(0, 589, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAsociarServicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCerrarAsociar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(66, 66, 66))
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        add(jPanel3, java.awt.BorderLayout.LINE_START);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void comboOrdenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboOrdenesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboOrdenesActionPerformed
-
-    private void btnCargarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarOrdenActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCargarOrdenActionPerformed
 
     private void btnCerrarAsociarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarAsociarActionPerformed
         Container contenedor = AsociarServicioOrden.this.getParent();
@@ -172,60 +186,31 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCerrarAsociarActionPerformed
 
     private void btnAsociarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsociarServicioActionPerformed
-       asociarOrden(); 
+   
     }//GEN-LAST:event_btnAsociarServicioActionPerformed
+
+    private void comboOrdenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboOrdenesActionPerformed
+      
+    }//GEN-LAST:event_comboOrdenesActionPerformed
+
+    private void btnCargarServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarServiciosActionPerformed
+        
+    }//GEN-LAST:event_btnCargarServiciosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsociarServicio;
-    private javax.swing.JButton btnCargarOrden;
+    private javax.swing.JButton btnCargarServicios;
     private javax.swing.JButton btnCerrarAsociar;
     private javax.swing.JComboBox<String> comboOrdenes;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblOrden;
-    private javax.swing.JTable tablaServicios;
+    private javax.swing.JTable modeloServicios;
     // End of variables declaration//GEN-END:variables
 
-    private void asociarOrden() {
-       
-    String ordenSeleccionada = (String) comboOrdenes.getSelectedItem();
-    if (ordenSeleccionada == null || ordenSeleccionada.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar una orden.");
-        return;
-    }
-
-    
-    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+   
 
    
-    ArrayList<String> serviciosSeleccionados = new ArrayList<>();
-
-    
-    for (int i = 0; i < modelo.getRowCount(); i++) {
-        Boolean estaSeleccionado = (Boolean) modelo.getValueAt(i, 0); 
-        if (estaSeleccionado != null && estaSeleccionado) {
-            String idServicio = modelo.getValueAt(i, 1).toString(); 
-            serviciosSeleccionados.add(idServicio);
-        }
-    }
-
-    if (serviciosSeleccionados.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "No ha seleccionado ningún servicio.");
-        return;
-    }
-
-    // Guardar asociación orden - servicios en archivo (append)
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden_servicios.txt", true))) {
-        for (String idServicio : serviciosSeleccionados) {
-            String linea = ordenSeleccionada + "," + idServicio;
-            bw.write(linea);
-            bw.newLine();
-        }
-        JOptionPane.showMessageDialog(this, "Servicios asociados correctamente.");
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
-    }
-    }
 }
