@@ -5,10 +5,14 @@ import java.awt.CardLayout;
 import java.awt.Container;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 
 public class ConsultaVehiculos extends javax.swing.JPanel {
@@ -23,7 +27,7 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaVehiculos = new javax.swing.JTable();
+        tablaVehiculos = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtMarca = new javax.swing.JTextField();
@@ -38,13 +42,13 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         btnEliminarVehiculo = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        btnBuscar = new javax.swing.JButton();
-        txtBuscarCliente = new javax.swing.JTextField();
+        btnBuscarVehiculo = new javax.swing.JButton();
+        txtIdCliente = new javax.swing.JTextField();
 
         setName(""); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
-        TablaVehiculos.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVehiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -65,7 +69,7 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(TablaVehiculos);
+        jScrollPane1.setViewportView(tablaVehiculos);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -117,16 +121,16 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         jLabel5.setText("Buscar por ID Cliente");
         jPanel2.add(jLabel5);
 
-        btnBuscar.setBackground(new java.awt.Color(153, 204, 255));
-        btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarVehiculo.setBackground(new java.awt.Color(153, 204, 255));
+        btnBuscarVehiculo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnBuscarVehiculo.setText("Buscar");
+        btnBuscarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+                btnBuscarVehiculoActionPerformed(evt);
             }
         });
-        jPanel2.add(btnBuscar);
-        jPanel2.add(txtBuscarCliente);
+        jPanel2.add(btnBuscarVehiculo);
+        jPanel2.add(txtIdCliente);
 
         add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
@@ -139,21 +143,59 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         CardLayout cl = (CardLayout) contenedor.getLayout();
          cl.show(contenedor, "inicio");
 }
-
-
-
-
     }//GEN-LAST:event_btnCerrarActionPerformed
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-      buscarAutoPorId();
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    private void btnBuscarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVehiculoActionPerformed
+       String idTexto = txtIdCliente.getText().trim();
+
+    if (idTexto.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un ID de cliente.");
+        return;
+    }
+
+    try {
+        int idCliente = Integer.parseInt(idTexto);
+        DefaultTableModel modelo = (DefaultTableModel) tablaVehiculos.getModel();
+        modelo.setRowCount(0);
+
+        try (BufferedReader br = new BufferedReader(new FileReader("vehiculos.txt"))) {
+            String linea;
+            boolean encontrado = false;
+
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+                if (datos.length >= 5) {
+                    int idArchivo = Integer.parseInt(datos[0]);
+
+                    if (idArchivo == idCliente) {
+                        String id = datos[1];
+                        String marca = datos[2];
+                        String modeloVeh = datos[3];
+                        String anio = datos[4];
+
+                        modelo.addRow(new Object[]{id, marca, modeloVeh, anio});
+                        encontrado = true;
+                    }
+                }
+            }
+
+            if (!encontrado) {
+                JOptionPane.showMessageDialog(this, "No se encontraron vehículos para este cliente.");
+            }
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage());
+        }
+
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "El ID debe ser un número.");
+    }
+    }//GEN-LAST:event_btnBuscarVehiculoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Placa;
-    private javax.swing.JTable TablaVehiculos;
-    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnBuscarVehiculo;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEliminarVehiculo;
     private javax.swing.JButton btnModificarVehiculo;
@@ -164,17 +206,15 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tablaVehiculos;
     private javax.swing.JTextField txtAño;
-    private javax.swing.JTextField txtBuscarCliente;
+    private javax.swing.JTextField txtIdCliente;
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtModelo;
     private javax.swing.JTextField txtPlaca;
     // End of variables declaration//GEN-END:variables
 
-    private void buscarAutoPorId() {
-       
-    }
-
-   
     
 }
+    
+

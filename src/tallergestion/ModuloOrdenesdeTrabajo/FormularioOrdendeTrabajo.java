@@ -1,13 +1,16 @@
 
 package tallergestion.ModuloOrdenesdeTrabajo;
 
-import java.awt.CardLayout;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import tallergestion.moduloServicios.AsociarServicioOrden;
+
 
 
 public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
@@ -26,13 +29,11 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         lblCliente = new javax.swing.JLabel();
-        ComboClientes = new javax.swing.JComboBox<>();
+        ComboClientesYVehiculos = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        lblVehiculo = new javax.swing.JLabel();
-        ComboVehiculos = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         tablaServiciosSeleccionados = new javax.swing.JScrollPane();
-        tablaCliente = new javax.swing.JTable();
+        tablaServicios = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         lblFechaIngreso = new javax.swing.JLabel();
         txtFechaIngreso = new javax.swing.JTextField();
@@ -41,7 +42,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         lblCosto = new javax.swing.JLabel();
         txtCostoTotal = new javax.swing.JTextField();
         btnRegistrarOrden = new javax.swing.JButton();
-        lblMensConf = new javax.swing.JLabel();
+        btnCargarServicio = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registrar Orden de Trabajo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
@@ -52,37 +53,29 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         lblCliente.setText("Cliente");
         jPanel1.add(lblCliente);
 
-        ComboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        ComboClientes.addActionListener(new java.awt.event.ActionListener() {
+        ComboClientesYVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar" }));
+        ComboClientesYVehiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ComboClientesActionPerformed(evt);
+                ComboClientesYVehiculosActionPerformed(evt);
             }
         });
-        jPanel1.add(ComboClientes);
+        jPanel1.add(ComboClientesYVehiculos);
 
         add(jPanel1);
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
-
-        lblVehiculo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblVehiculo.setText("Vehiculo");
-        jPanel2.add(lblVehiculo);
-
-        ComboVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(ComboVehiculos);
-
         add(jPanel2);
 
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
 
-        tablaCliente.setModel(new javax.swing.table.DefaultTableModel(
+        tablaServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null}
             },
             new String [] {
-                "Num", "Servicio", "Descripcion ", "Precio", "Prioridad"
+                "Num", "Servicio", "Descripcion ", "Precio", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
@@ -100,7 +93,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tablaServiciosSeleccionados.setViewportView(tablaCliente);
+        tablaServiciosSeleccionados.setViewportView(tablaServicios);
 
         jPanel3.add(tablaServiciosSeleccionados);
 
@@ -133,25 +126,132 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         });
         jPanel4.add(btnRegistrarOrden);
 
-        lblMensConf.setText("--");
-        jPanel4.add(lblMensConf);
+        btnCargarServicio.setBackground(new java.awt.Color(51, 153, 0));
+        btnCargarServicio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCargarServicio.setText("Cargar Servicios ");
+        btnCargarServicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarServicioActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnCargarServicio);
 
         add(jPanel4);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarOrdenActionPerformed
+        
+    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+
     
+    String codigoOrden = generarCodigoOrden();
+
+    boolean haySeleccion = false;
+
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden_servicios.txt", true))) {
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            Boolean seleccionado = (Boolean) modelo.getValueAt(i, 0);
+            if (seleccionado != null && seleccionado) {
+                haySeleccion = true;
+
+                String id = (String) modelo.getValueAt(i, 1);
+                String nombre = (String) modelo.getValueAt(i, 2);
+                String descripcion = (String) modelo.getValueAt(i, 3);
+                String precio = (String) modelo.getValueAt(i, 4);
+                String tipo = (String) modelo.getValueAt(i, 5);
+                String estado = (String) modelo.getValueAt(i, 6);
+
+                bw.write(codigoOrden + "," + id + "," + nombre + "," + descripcion + "," + precio + "," + tipo + "," + estado);
+                bw.newLine();
+            }
+        }
+
+        if (haySeleccion) {
+            JOptionPane.showMessageDialog(this, "Orden registrada con código: " + codigoOrden);
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un servicio.");
+        }
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar la orden: " + e.getMessage());
+    }
 
     }//GEN-LAST:event_btnRegistrarOrdenActionPerformed
 
-    private void ComboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboClientesActionPerformed
+    private void ComboClientesYVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboClientesYVehiculosActionPerformed
     
-    }//GEN-LAST:event_ComboClientesActionPerformed
+     ComboClientesYVehiculos.removeAllItems();
+     ComboClientesYVehiculos.addItem("-- Seleccione Cliente y Vehículo --");
+    
+    File archivoClientes = new File("clientes.txt");
+    File archivoVehiculos = new File("vehiculos.txt");
+    
+    if (!archivoClientes.exists()) {
+         ComboClientesYVehiculos.addItem("No hay clientes registrados");
+        return;
+    }
+    
+    try (BufferedReader brClientes = new BufferedReader(new FileReader(archivoClientes))) {
+        String lineaCliente;
+        
+        while ((lineaCliente = brClientes.readLine()) != null) {
+            String[] datosCliente = lineaCliente.split(",");
+            if (datosCliente.length >= 2) {
+                String idCliente = datosCliente[0].trim();
+                String nombreCliente = datosCliente[1].trim();
+                
+               
+             ComboClientesYVehiculos.addItem("*" + idCliente + " - " + nombreCliente);
+                
+                if (archivoVehiculos.exists()) {
+                    try (BufferedReader brVehiculos = new BufferedReader(new FileReader(archivoVehiculos))) {
+                        String lineaVehiculo;
+                        boolean tieneVehiculos = false;
+                        
+                        while ((lineaVehiculo = brVehiculos.readLine()) != null) {
+                            String[] datosVehiculo = lineaVehiculo.split(",");
+                            
+                            if (datosVehiculo.length >= 5 && datosVehiculo[1].trim().equals(idCliente)) {
+                                String placa = datosVehiculo[2].trim();
+                                String marca = datosVehiculo[3].trim();
+                                String modelo = datosVehiculo[4].trim();
+                                String año = datosVehiculo.length > 5 ? datosVehiculo[5].trim() : "";
+                                
+                              
+                                ComboClientesYVehiculos.addItem("    🚗 " + placa + " - " + marca + " " + modelo + " " + año);
+                                tieneVehiculos = true;
+                            }
+                        }
+                        
+                        if (!tieneVehiculos) {
+                           ComboClientesYVehiculos.addItem("️Sin vehículos registrados");
+                        }
+                        
+                    } catch (IOException e) {
+                        ComboClientesYVehiculos.addItem("Error al cargar vehículos");
+                    }
+                } else {
+                     ComboClientesYVehiculos.addItem("No existe archivo de vehículos");
+                }
+                
+                // Agregar separador visual
+                 ComboClientesYVehiculos.addItem("────────────────────────────");
+            }
+        }
+        
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+    }
+    }//GEN-LAST:event_ComboClientesYVehiculosActionPerformed
+
+    private void btnCargarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarServicioActionPerformed
+          cargarServicios();
+    }//GEN-LAST:event_btnCargarServicioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ComboClientes;
-    private javax.swing.JComboBox<String> ComboVehiculos;
+    private javax.swing.JComboBox<String> ComboClientesYVehiculos;
+    private javax.swing.JButton btnCargarServicio;
     private javax.swing.JButton btnRegistrarOrden;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -161,47 +261,81 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     private javax.swing.JLabel lblCosto;
     private javax.swing.JLabel lblFechaEntrega;
     private javax.swing.JLabel lblFechaIngreso;
-    private javax.swing.JLabel lblMensConf;
-    private javax.swing.JLabel lblVehiculo;
-    private javax.swing.JTable tablaCliente;
+    private javax.swing.JTable tablaServicios;
     private javax.swing.JScrollPane tablaServiciosSeleccionados;
     private javax.swing.JTextField txtCostoTotal;
     private javax.swing.JTextField txtFechaEntrega;
     private javax.swing.JTextField txtFechaIngreso;
     // End of variables declaration//GEN-END:variables
 
-    private void cargarCliente() {
-    String seleccionado = (String) ComboClientes.getSelectedItem();
 
-    if (seleccionado == null || seleccionado.equals("Seleccione un cliente")) {
-        return;
-    }
 
-    // Obtener solo el ID (antes del guion)
-    String idSeleccionado = seleccionado.split("-")[0].trim();
-
-    try (BufferedReader br = new BufferedReader(new FileReader("clientes.txt"))) {
-        String linea;
-        DefaultTableModel modelo = (DefaultTableModel) tablaCliente.getModel();
-        modelo.setRowCount(0); 
-
-        while ((linea = br.readLine()) != null) {
-            String[] partes = linea.split(",");
-            if (partes.length >= 4) {
-                String id = partes[0].trim();
-                if (id.equals(idSeleccionado)) {
-                    String nombre = partes[1].trim();
-                    String telefono = partes[2].trim();
-                    String direccion = partes[3].trim();
-
-                    Object[] fila = { id, nombre, telefono, direccion };
-                    modelo.addRow(fila);
-                    break;
+    private String generarCodigoOrden() {
+        int contador = 1;
+        File archivo = new File("orden_servicios.txt");
+        if (archivo.exists()) {
+            try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (!linea.trim().isEmpty()) {
+                    contador++;
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+    return "ORD" + String.format("%03d", contador);
+        
+    
+    }
+
+    private void cargarServicios() {
+         DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+    modelo.setRowCount(0); // Limpiar tabla
+    
+    File archivo = new File("servicios.txt");
+    if (!archivo.exists()) {
+        JOptionPane.showMessageDialog(this, "No existe el archivo servicios.txt");
+        return;
+    }
+    
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        int numero = 1;
+        
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+            // Formato esperado: id,nombre,descripcion,precio,tipo,estado
+            if (datos.length >= 4) {
+                String id = datos[0].trim();
+                String nombre = datos[1].trim();
+                String descripcion = datos[2].trim();
+                String precio = datos[3].trim();
+                
+                // Agregar fila a la tabla
+                // Columnas: Num, Servicio, Descripcion, Precio, Prioridad
+                modelo.addRow(new Object[]{
+                    numero++,           // Num (auto-incrementado)
+                    nombre,            // Servicio
+                    descripcion,       // Descripcion
+                    Double.parseDouble(precio), // Precio
+                    false              // Prioridad (checkbox sin marcar)
+                });
+            }
+        }
+        
+        if (modelo.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay servicios registrados en el archivo");
+        }
+        
     } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al leer cliente: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al leer servicios: " + e.getMessage());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Error en el formato del precio: " + e.getMessage());
     }
     }
+
+  
+    
 }

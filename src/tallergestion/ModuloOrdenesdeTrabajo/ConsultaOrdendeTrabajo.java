@@ -1,6 +1,19 @@
 
 package tallergestion.ModuloOrdenesdeTrabajo;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 
 public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
@@ -23,11 +36,11 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtFiltroFecha = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        ComboBoxFiltroEstado = new javax.swing.JComboBox<>();
+        comboOrdenes = new javax.swing.JComboBox<>();
         btnBuscarOrdenes = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaServicios = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -44,7 +57,6 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         btnModificarOrden = new javax.swing.JButton();
         btnCerrarOrden = new javax.swing.JButton();
-        lblMensajeAccion = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Orden de trabajo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
         setLayout(new java.awt.BorderLayout());
@@ -69,8 +81,8 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         jLabel5.setText("Estado");
         jPanel2.add(jLabel5);
 
-        ComboBoxFiltroEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "En progreso", "Finalizado", "Orden Cancelada" }));
-        jPanel2.add(ComboBoxFiltroEstado);
+        comboOrdenes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "En progreso", "Finalizado", "Orden Cancelada" }));
+        jPanel2.add(comboOrdenes);
 
         btnBuscarOrdenes.setText("Buscar");
         btnBuscarOrdenes.addActionListener(new java.awt.event.ActionListener() {
@@ -87,7 +99,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultado de busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -113,7 +125,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaServicios);
 
         jPanel1.add(jScrollPane1);
 
@@ -155,15 +167,22 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         btnModificarOrden.setBackground(new java.awt.Color(102, 255, 204));
         btnModificarOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnModificarOrden.setText("Modificar Orden");
+        btnModificarOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarOrdenActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnModificarOrden);
 
         btnCerrarOrden.setBackground(new java.awt.Color(255, 102, 102));
         btnCerrarOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnCerrarOrden.setText("Cerrar Orden");
+        btnCerrarOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarOrdenActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnCerrarOrden);
-
-        lblMensajeAccion.setText("Este label es para mostar el mensaje \"orden cerrada con exito ect\"");
-        jPanel4.add(lblMensajeAccion);
 
         jPanel1.add(jPanel4);
 
@@ -171,16 +190,114 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarOrdenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarOrdenesActionPerformed
-  
+      Set<String> codigosUnicos = new LinkedHashSet<>(); 
+
+    File archivo = new File("orden_servicios.txt");
+    if (!archivo.exists()) {
+        JOptionPane.showMessageDialog(this, "No hay órdenes registradas.");
+        return;
+    }
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            if (!linea.trim().isEmpty()) {
+                String[] partes = linea.split(",");
+                if (partes.length > 0) {
+                    codigosUnicos.add(partes[0].trim()); // código de orden
+                }
+            }
+        }
+
+        // Limpiar y llenar el combo
+        comboOrdenes.removeAllItems();
+        for (String codigo : codigosUnicos) {
+            comboOrdenes.addItem(codigo);
+        }
+
+        if (codigosUnicos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron órdenes.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Órdenes cargadas correctamente.");
+        }
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer órdenes: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnBuscarOrdenesActionPerformed
+
+    private void btnModificarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarOrdenActionPerformed
+     String codigoOrden = (String) comboOrdenes.getSelectedItem(); // ejemplo: "ORD002"
+    if (codigoOrden == null || codigoOrden.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una orden para modificar.");
+        return;
+    }
+
+    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+    List<String> nuevasLineas = new ArrayList<>();
+
+    
+    for (int i = 0; i < modelo.getRowCount(); i++) {
+        Boolean seleccionado = (Boolean) modelo.getValueAt(i, 0);
+        if (seleccionado != null && seleccionado) {
+            String id = (String) modelo.getValueAt(i, 1);
+            String nombre = (String) modelo.getValueAt(i, 2);
+            String descripcion = (String) modelo.getValueAt(i, 3);
+            String precio = (String) modelo.getValueAt(i, 4);
+            String tipo = (String) modelo.getValueAt(i, 5);
+            String estado = (String) modelo.getValueAt(i, 6);
+
+            nuevasLineas.add(codigoOrden + "," + id + "," + nombre + "," + descripcion + "," + precio + "," + tipo + "," + estado);
+        }
+    }
+
+    if (nuevasLineas.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un servicio.");
+        return;
+    }
+
+    // Leer archivo actual y reconstruirlo sin las líneas de la orden
+    File archivo = new File("orden_servicios.txt");
+    List<String> lineasFinales = new ArrayList<>();
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            if (!linea.startsWith(codigoOrden + ",")) {
+                lineasFinales.add(linea);
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer archivo: " + e.getMessage());
+        return;
+    }
+
+    // Agregar las nuevas líneas
+    lineasFinales.addAll(nuevasLineas);
+
+    // Reescribir archivo completo
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+        for (String linea : lineasFinales) {
+            bw.write(linea);
+            bw.newLine();
+        }
+        JOptionPane.showMessageDialog(this, "Orden " + codigoOrden + " modificada correctamente.");
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar archivo: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnModificarOrdenActionPerformed
+
+    private void btnCerrarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarOrdenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCerrarOrdenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboBoxDetalleVehiculo;
-    private javax.swing.JComboBox<String> ComboBoxFiltroEstado;
     private javax.swing.JButton btnBuscarOrdenes;
     private javax.swing.JButton btnCerrarOrden;
     private javax.swing.JButton btnModificarOrden;
+    private javax.swing.JComboBox<String> comboOrdenes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -197,8 +314,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lblMensajeAccion;
+    private javax.swing.JTable tablaServicios;
     private javax.swing.JTextField txtDetalleCliente;
     private javax.swing.JTextField txtDetalleCosto;
     private javax.swing.JTextField txtDetalleEntrega;

@@ -42,19 +42,16 @@
             <Property name="text" type="java.lang.String" value="Cliente"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="ComboClientes">
+        <Component class="javax.swing.JComboBox" name="ComboClientesYVehiculos">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
+              <StringArray count="1">
+                <StringItem index="0" value="Seleccionar"/>
               </StringArray>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ComboClientesActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ComboClientesYVehiculosActionPerformed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -68,31 +65,6 @@
         <Property name="columns" type="int" value="0"/>
         <Property name="rows" type="int" value="1"/>
       </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JLabel" name="lblVehiculo">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="18" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Vehiculo"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="ComboVehiculos">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
-      </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel3">
 
@@ -107,7 +79,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tablaCliente">
+            <Component class="javax.swing.JTable" name="tablaServicios">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="5" rowCount="3">
@@ -115,7 +87,7 @@
                     <Column editable="false" title="Servicio" type="java.lang.String"/>
                     <Column editable="false" title="Descripcion " type="java.lang.String"/>
                     <Column editable="false" title="Precio" type="java.lang.Double"/>
-                    <Column editable="true" title="Prioridad" type="java.lang.Boolean"/>
+                    <Column editable="true" title="Seleccionar" type="java.lang.Boolean"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -207,10 +179,19 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegistrarOrdenActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblMensConf">
+        <Component class="javax.swing.JButton" name="btnCargarServicio">
           <Properties>
-            <Property name="text" type="java.lang.String" value="--"/>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="99" red="33" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Cargar Servicios "/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCargarServicioActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -189,7 +189,7 @@ public class ConsultaClientes extends javax.swing.JPanel {
 
                 modelo.addRow(new Object[]{id, nombre, telefono, direccion});
                 encontrado = true;
-                break; // Salimos tras encontrar cliente
+                break;
             }
         }
 

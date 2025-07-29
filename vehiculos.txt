@@ -1,1 +1,6 @@
 2,234557,Audi,xrt,2019
+12,456879,Honda,Civic,2012
+12,23456,Honda,Civic,2022
+12,345678,Hyundai,Tucson,2017
+13,890475,Toyota,Corolla,2000
+12,2345,Totoya,Hilux,2022
