@@ -140,106 +140,116 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarOrdenActionPerformed
-        
-    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+  
+      DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+      String codigoOrden = generarCodigoOrden();
+      boolean haySeleccion = false;
 
-    
-    String codigoOrden = generarCodigoOrden();
-
-    boolean haySeleccion = false;
-
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden_servicios.txt", true))) {
+       try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden_servicios.txt", true))) {
         for (int i = 0; i < modelo.getRowCount(); i++) {
-            Boolean seleccionado = (Boolean) modelo.getValueAt(i, 0);
-            if (seleccionado != null && seleccionado) {
-                haySeleccion = true;
+      
+        if (Boolean.TRUE.equals(modelo.getValueAt(i, 4))) {
+            haySeleccion = true;
 
-                String id = (String) modelo.getValueAt(i, 1);
-                String nombre = (String) modelo.getValueAt(i, 2);
-                String descripcion = (String) modelo.getValueAt(i, 3);
-                String precio = (String) modelo.getValueAt(i, 4);
-                String tipo = (String) modelo.getValueAt(i, 5);
-                String estado = (String) modelo.getValueAt(i, 6);
+            String num = modelo.getValueAt(i, 0).toString();
+            String servicio = modelo.getValueAt(i, 1).toString();
+            String descripcion = modelo.getValueAt(i, 2).toString();
+            String precio = modelo.getValueAt(i, 3).toString();
 
-                bw.write(codigoOrden + "," + id + "," + nombre + "," + descripcion + "," + precio + "," + tipo + "," + estado);
-                bw.newLine();
-            }
+            bw.write(codigoOrden + "," + num + "," + servicio + "," + descripcion + "," + precio);
+            bw.newLine();
         }
-
-        if (haySeleccion) {
-            JOptionPane.showMessageDialog(this, "Orden registrada con código: " + codigoOrden);
-        } else {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un servicio.");
-        }
-
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al guardar la orden: " + e.getMessage());
     }
 
+    if (haySeleccion) {
+        JOptionPane.showMessageDialog(this, "Orden registrada con código: " + codigoOrden);
+    } else {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un servicio.");
+    }
+
+     } catch (IOException e) {
+    JOptionPane.showMessageDialog(this, "Error al guardar la orden: " + e.getMessage());
+    }    
     }//GEN-LAST:event_btnRegistrarOrdenActionPerformed
 
     private void ComboClientesYVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboClientesYVehiculosActionPerformed
-    
-      ComboClientesYVehiculos.removeAllItems();
-      ComboClientesYVehiculos.addItem("-- Seleccione Cliente y Vehículo --");
 
-      File archivoClientes = new File("clientes.txt");
-      File archivoVehiculos = new File("vehiculos.txt");
+       ComboClientesYVehiculos.removeAllItems();
+       ComboClientesYVehiculos.addItem("- Seleccione Cliente y Vehículo -");
 
-if (!archivoClientes.exists()) {
-    ComboClientesYVehiculos.addItem("No hay clientes registrados");
-    return;
-}
+       String idClienteSeleccionado = "12";
+       String itemSeleccionado = null;
 
-try (BufferedReader brClientes = new BufferedReader(new FileReader(archivoClientes))) {
-    String lineaCliente;
-    
+       File archivoClientes = new File("clientes.txt");
+       File archivoVehiculos = new File("vehiculos.txt");
+
+       if (!archivoClientes.exists()) {
+       ComboClientesYVehiculos.addItem("No hay clientes registrados");
+       return;
+       }
+
+     try (BufferedReader brClientes = new BufferedReader(new FileReader(archivoClientes))) {
+     String lineaCliente;
+
     while ((lineaCliente = brClientes.readLine()) != null) {
         String[] datosCliente = lineaCliente.split(",");
         if (datosCliente.length >= 2) {
             String idCliente = datosCliente[0].trim();
             String nombreCliente = datosCliente[1].trim();
-            
-            ComboClientesYVehiculos.addItem("*" + idCliente + " - " + nombreCliente);
-            
+            boolean tieneVehiculos = false;
+
             if (archivoVehiculos.exists()) {
                 try (BufferedReader brVehiculos = new BufferedReader(new FileReader(archivoVehiculos))) {
                     String lineaVehiculo;
-                    boolean tieneVehiculos = false;
-                    
+
                     while ((lineaVehiculo = brVehiculos.readLine()) != null) {
                         String[] datosVehiculo = lineaVehiculo.split(",");
-                           
+
                         if (datosVehiculo.length >= 5 && datosVehiculo[0].trim().equals(idCliente)) {
                             String placa = datosVehiculo[1].trim();
                             String marca = datosVehiculo[2].trim();
                             String modelo = datosVehiculo[3].trim();
-                            String año = datosVehiculo[4].trim(); 
-                            
-                            ComboClientesYVehiculos.addItem("**" + placa + " - " + marca + " " + modelo + " " + año);
+                            String año = datosVehiculo[4].trim();
+
+                            String item = idCliente + " - " + nombreCliente + " | " + placa + " - " + marca + " " + modelo + " " + año;
+                            ComboClientesYVehiculos.addItem(item);
+
+                            // Guardar ítem para seleccionarlo si coincide con el ID deseado
+                            if (idCliente.equals(idClienteSeleccionado) && itemSeleccionado == null) {
+                                itemSeleccionado = item;
+                            }
+
                             tieneVehiculos = true;
                         }
                     }
-                    
-                    if (!tieneVehiculos) {
-                        ComboClientesYVehiculos.addItem("️Sin vehículos registrados");
-                    }
-                    
                 } catch (IOException e) {
-                    ComboClientesYVehiculos.addItem("Error al cargar vehículos");
+                    ComboClientesYVehiculos.addItem("Error al leer vehículos");
                 }
-            } else {
-                ComboClientesYVehiculos.addItem("No existe archivo de vehículos");
             }
-            
+
+            if (!tieneVehiculos) {
+                String item = idCliente + " - " + nombreCliente + " | Sin vehículos registrados";
+                ComboClientesYVehiculos.addItem(item);
+
+                if (idCliente.equals(idClienteSeleccionado) && itemSeleccionado == null) {
+                    itemSeleccionado = item;
+                }
+            }
+
             ComboClientesYVehiculos.addItem("────────────────────────────");
         }
     }
-    
+
+   
+    if (itemSeleccionado != null) {
+        ComboClientesYVehiculos.setSelectedItem(itemSeleccionado);
+    }
+
 } catch (IOException e) {
     JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+}
     }//GEN-LAST:event_ComboClientesYVehiculosActionPerformed
-    }
+    
     private void btnCargarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarServicioActionPerformed
           cargarServicios();
     }//GEN-LAST:event_btnCargarServicioActionPerformed
@@ -287,8 +297,8 @@ try (BufferedReader brClientes = new BufferedReader(new FileReader(archivoClient
     }
 
     private void cargarServicios() {
-         DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
-    modelo.setRowCount(0); // Limpiar tabla
+    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+    modelo.setRowCount(0); 
     
     File archivo = new File("servicios.txt");
     if (!archivo.exists()) {

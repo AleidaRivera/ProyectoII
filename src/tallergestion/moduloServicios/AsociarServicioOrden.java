@@ -171,19 +171,19 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
     private void btnAsociarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsociarServicioActionPerformed
    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
 
-    // Generar un nuevo código de orden
+   
     String codigoOrden = generarCodigoOrden();
 
     boolean haySeleccion = false;
 
-    // Abrir archivo para guardar los servicios asociados a la orden
+  
     try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden_servicios.txt", true))) {
         for (int i = 0; i < modelo.getRowCount(); i++) {
             Boolean seleccionado = (Boolean) modelo.getValueAt(i, 0);
             if (seleccionado != null && seleccionado) {
                 haySeleccion = true;
 
-                // Leer todos los datos de la fila
+               
                 String id = (String) modelo.getValueAt(i, 1);
                 String nombre = (String) modelo.getValueAt(i, 2);
                 String descripcion = (String) modelo.getValueAt(i, 3);
@@ -191,13 +191,13 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
                 String tipo = (String) modelo.getValueAt(i, 5);
                 String estado = (String) modelo.getValueAt(i, 6);
 
-                // Guardar línea con el código de orden
+               
                 bw.write(codigoOrden + "," + id + "," + nombre + "," + descripcion + "," + precio + "," + tipo + "," + estado);
                 bw.newLine();
             }
         }
 
-        // Mostrar mensaje según el resultado
+       
         if (haySeleccion) {
             JOptionPane.showMessageDialog(this, "Servicios asociados correctamente a la orden: " + codigoOrden);
         } else {
