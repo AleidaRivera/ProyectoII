@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -40,7 +41,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         lblFechaEntrega = new javax.swing.JLabel();
         txtFechaEntrega = new javax.swing.JTextField();
         lblCosto = new javax.swing.JLabel();
-        txtCostoTotal = new javax.swing.JTextField();
+        txtCosto = new javax.swing.JTextField();
         btnRegistrarOrden = new javax.swing.JButton();
         btnCargarServicio = new javax.swing.JButton();
 
@@ -114,7 +115,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         lblCosto.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblCosto.setText("Costo");
         jPanel4.add(lblCosto);
-        jPanel4.add(txtCostoTotal);
+        jPanel4.add(txtCosto);
 
         btnRegistrarOrden.setBackground(new java.awt.Color(102, 255, 204));
         btnRegistrarOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -214,7 +215,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
                             String item = idCliente + " - " + nombreCliente + " | " + placa + " - " + marca + " " + modelo + " " + año;
                             ComboClientesYVehiculos.addItem(item);
 
-                            // Guardar ítem para seleccionarlo si coincide con el ID deseado
+                            
                             if (idCliente.equals(idClienteSeleccionado) && itemSeleccionado == null) {
                                 itemSeleccionado = item;
                             }
@@ -236,7 +237,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
                 }
             }
 
-            ComboClientesYVehiculos.addItem("────────────────────────────");
+            ComboClientesYVehiculos.addItem("────────────────────");
         }
     }
 
@@ -254,7 +255,6 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
           cargarServicios();
     }//GEN-LAST:event_btnCargarServicioActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboClientesYVehiculos;
     private javax.swing.JButton btnCargarServicio;
@@ -269,7 +269,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     private javax.swing.JLabel lblFechaIngreso;
     private javax.swing.JTable tablaServicios;
     private javax.swing.JScrollPane tablaServiciosSeleccionados;
-    private javax.swing.JTextField txtCostoTotal;
+    private javax.swing.JTextField txtCosto;
     private javax.swing.JTextField txtFechaEntrega;
     private javax.swing.JTextField txtFechaIngreso;
     // End of variables declaration//GEN-END:variables
@@ -293,54 +293,95 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     }
     return "ORD" + String.format("%03d", contador);
         
-    
     }
 
     private void cargarServicios() {
-    DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
-    modelo.setRowCount(0); 
-    
+  
+       
+        DefaultTableModel modelo = new DefaultTableModel(
+        new Object[]{"Num", "Servicio", "Descripción", "Precio", "Seleccionar"},
+        0
+    ) {
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            if (columnIndex == 4) return Boolean.class; // Checkbox
+            return String.class;
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return column == 4; 
+        }
+    };
+
+    tablaServicios.setModel(modelo); 
+
     File archivo = new File("servicios.txt");
     if (!archivo.exists()) {
         JOptionPane.showMessageDialog(this, "No existe el archivo servicios.txt");
         return;
     }
-    
+
     try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
         String linea;
         int numero = 1;
-        
+
         while ((linea = br.readLine()) != null) {
             String[] datos = linea.split(",");
-            
+
             if (datos.length >= 4) {
-                String id = datos[0].trim();
                 String nombre = datos[1].trim();
                 String descripcion = datos[2].trim();
                 String precio = datos[3].trim();
-                
-             
+
                 modelo.addRow(new Object[]{
-                    numero++,           
-                    nombre,          
-                    descripcion,      
-                    Double.parseDouble(precio), 
-                    false             
+                    numero++,
+                    nombre,
+                    descripcion,
+                    Double.parseDouble(precio),
+                    false
                 });
             }
         }
-        
+
         if (modelo.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "No hay servicios registrados en el archivo");
         }
-        
+
     } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Error al leer servicios: " + e.getMessage());
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Error en el formato del precio: " + e.getMessage());
     }
+
+   
+    modelo.addTableModelListener(e -> {
+        if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 4) {
+            calcularCostoTotal();
+        }
+    });
     }
 
-  
+    private void calcularCostoTotal() {
+     DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
+    double total = 0.0;
+
+    for (int i = 0; i < modelo.getRowCount(); i++) {
+        Boolean seleccionado = (Boolean) modelo.getValueAt(i, 4); 
+        if (Boolean.TRUE.equals(seleccionado)) {
+            try {
+                double precio = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+                total += precio;
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Error en el precio en la fila " + (i + 1));
+            }
+        }
+    }
+
+    txtCosto.setText(String.format("%.2f", total)); 
+    }
     
+   
 }
+    
+

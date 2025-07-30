@@ -163,7 +163,7 @@
             <Property name="text" type="java.lang.String" value="Costo"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtCostoTotal">
+        <Component class="javax.swing.JTextField" name="txtCosto">
         </Component>
         <Component class="javax.swing.JButton" name="btnRegistrarOrden">
           <Properties>

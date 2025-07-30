@@ -29,18 +29,8 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaOrdenesServicios = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        txtDetalleCliente = new javax.swing.JTextField();
-        ComboBoxDetalleVehiculo = new javax.swing.JComboBox<>();
-        txtDetalleIngreso = new javax.swing.JTextField();
-        txtDetalleEntrega = new javax.swing.JTextField();
-        txtDetalleEstado = new javax.swing.JTextField();
-        txtDetalleCosto = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaDetalleOrden = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         btnModificarOrden = new javax.swing.JButton();
         btnCerrarOrden = new javax.swing.JButton();
@@ -102,37 +92,35 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         jPanel1.add(jScrollPane1);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalle de la Orden", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanel3.setLayout(new java.awt.GridLayout(2, 5));
 
-        jLabel11.setText("Cliente");
-        jPanel3.add(jLabel11);
+        tablaDetalleOrden.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Cliente ", "Vehiculo", "Fecha Ingreso", "Fecha Entrega ", "Estado", "Costo"
+            }
+        ));
+        jScrollPane2.setViewportView(tablaDetalleOrden);
 
-        jLabel12.setText("Vehiculo");
-        jPanel3.add(jLabel12);
-
-        jLabel10.setText("Fecha ingreso");
-        jPanel3.add(jLabel10);
-
-        jLabel6.setText("Fecha entrega");
-        jPanel3.add(jLabel6);
-
-        jLabel7.setText("Estado");
-        jPanel3.add(jLabel7);
-
-        jLabel8.setText("Costo");
-        jPanel3.add(jLabel8);
-
-        txtDetalleCliente.setEditable(false);
-        jPanel3.add(txtDetalleCliente);
-
-        ComboBoxDetalleVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel3.add(ComboBoxDetalleVehiculo);
-
-        txtDetalleIngreso.setEditable(false);
-        jPanel3.add(txtDetalleIngreso);
-        jPanel3.add(txtDetalleEntrega);
-        jPanel3.add(txtDetalleEstado);
-        jPanel3.add(txtDetalleCosto);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(157, 157, 157))
+        );
 
         jPanel1.add(jPanel3);
 
@@ -239,15 +227,13 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
     private void btnBuscarOrdenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarOrdenesActionPerformed
        
-        String numeroOrden = txtNumeroOrden.getText().trim();
-
+     String numeroOrden = txtNumeroOrden.getText().trim();
 
 DefaultTableModel modelo = new DefaultTableModel(
     new String[]{"Orden", "ID Servicio", "Nombre", "Descripción", "Precio", "Categoría", "Estado"}, 0
 ) {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        
         if (getRowCount() > 0 && columnIndex < getColumnCount()) {
             Object value = getValueAt(0, columnIndex);
             return (value != null) ? value.getClass() : Object.class;
@@ -257,11 +243,11 @@ DefaultTableModel modelo = new DefaultTableModel(
 
     @Override
     public boolean isCellEditable(int row, int column) {
-        return false; 
+        return false;
     }
 };
 
-tablaOrdenesServicios.setModel(modelo); 
+tablaOrdenesServicios.setModel(modelo);
 
 File archivo = new File("orden_servicios.txt");
 
@@ -274,6 +260,7 @@ try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
     String linea;
     boolean encontrado = false;
     boolean buscarTodas = numeroOrden.isEmpty();
+    String ordenMostrada = null;
 
     while ((linea = br.readLine()) != null) {
         linea = linea.trim();
@@ -295,6 +282,11 @@ try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
                     ord, idServicio, nombreServicio, descripcion, precio, categoria, estado
                 });
                 encontrado = true;
+
+                // Guardar la orden mostrada (para mostrar su detalle luego)
+                if (!buscarTodas) {
+                    ordenMostrada = ord;
+                }
             }
         }
     }
@@ -304,6 +296,11 @@ try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             JOptionPane.showMessageDialog(this, "No hay servicios registrados en el sistema.", "Información", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "No se encontraron servicios para la orden " + numeroOrden, "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+    } else {
+        // ✅ Mostrar detalle de la orden en la tabla inferior
+        if (!buscarTodas && ordenMostrada != null) {
+            mostrarDetalleOrden(ordenMostrada); // 👈 aquí se muestra el detalle automáticamente
         }
     }
 
@@ -318,27 +315,17 @@ try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ComboBoxDetalleVehiculo;
     private javax.swing.JButton btnBuscarOrdenes;
     private javax.swing.JButton btnCerrarOrden;
     private javax.swing.JButton btnModificarOrden;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tablaDetalleOrden;
     private javax.swing.JTable tablaOrdenesServicios;
-    private javax.swing.JTextField txtDetalleCliente;
-    private javax.swing.JTextField txtDetalleCosto;
-    private javax.swing.JTextField txtDetalleEntrega;
-    private javax.swing.JTextField txtDetalleEstado;
-    private javax.swing.JTextField txtDetalleIngreso;
     private javax.swing.JTextField txtNumeroOrden;
     // End of variables declaration//GEN-END:variables
 
@@ -372,6 +359,40 @@ try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
         }
     } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Error al cargar órdenes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }
+
+    private void mostrarDetalleOrden(String ordenMostrada) {
+   
+          DefaultTableModel modeloDetalle = (DefaultTableModel) tablaDetalleOrden.getModel();
+    modeloDetalle.setRowCount(0); // limpiar tabla
+
+    File archivo = new File("ordenes.txt");
+    if (!archivo.exists()) {
+        JOptionPane.showMessageDialog(this, "El archivo de órdenes no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+            // Formato esperado: ID,Cliente,Vehiculo,FechaIngreso,FechaEntrega,Estado,Costo
+            if (datos[0].equalsIgnoreCase(ordenMostrada)) {
+                modeloDetalle.addRow(new Object[]{
+                    datos[1], // Cliente
+                    datos[2], // Vehículo
+                    datos[3], // Fecha ingreso
+                    datos[4], // Fecha entrega
+                    datos[5], // Estado
+                    datos[6]  // Costo total
+                });
+                break;
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer detalles de la orden.", "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
     }
     }
 }

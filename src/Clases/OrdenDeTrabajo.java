@@ -1,11 +1,12 @@
 
 package Clases;
 
+import Interfaz.Facturable;
 import java.util.Date;
 import java.util.List;
 
 
-public class OrdenDeTrabajo {
+public abstract class OrdenDeTrabajo implements Facturable {
     
     private String numeroOrden;
     private String idCliente;

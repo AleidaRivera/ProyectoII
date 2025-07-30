@@ -7,7 +7,7 @@ ORD006,2,Pintura,Pintura de alta calida,340.0
 ORD007,2,Pintura,Pintura de alta calida,340.0
 ORD008,3,Cambio de Llanatas,Depende,12.000,Cambio de Llanatas,Activo
 ORD009,3,Cambio de Llanatas,Depende,12.0
-ORD010,1,Mecanica,Mecanica general,10.0
+ORD010,1,Mecanica,Mecanica general,10.0,No definido,Completada
 ORD011,4,Cambio de Llanatas,Delanteras,15000,Cambio de Llanatas,Completada
 ORD012,4,Cambio de Llanatas,Delanteras,15000.0
 ORD013,1,Mecanica,Mecanica general,10.0
@@ -16,3 +16,5 @@ ORD013,3,Cambio de Llanatas,Depende,12.0
 ORD013,4,Cambio de Llanatas,Delanteras,15000.0
 ORD017,5,Pintura,Pintura completa y pulido,50.000,Pintura,Activo
 ORD018,5,Pintura,Pintura completa y pulido,50.0,No definido,Completada
+ORD019,2,Pintura,Pintura de alta calida,340.0
+ORD019,3,Cambio de Llanatas,Depende,12.0
