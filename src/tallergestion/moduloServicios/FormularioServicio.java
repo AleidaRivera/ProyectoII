@@ -69,6 +69,11 @@ public class FormularioServicio extends javax.swing.JPanel {
         });
 
         comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mecanica", "Pintura", "Cambio de Llanatas", "Otros" }));
+        comboTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboTipoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -161,6 +166,10 @@ public class FormularioServicio extends javax.swing.JPanel {
     private void btnCerrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrar1ActionPerformed
       
     }//GEN-LAST:event_btnCerrar1ActionPerformed
+
+    private void comboTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboTipoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

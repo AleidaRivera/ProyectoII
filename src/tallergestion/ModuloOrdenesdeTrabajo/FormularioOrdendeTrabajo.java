@@ -2,6 +2,8 @@
 package tallergestion.ModuloOrdenesdeTrabajo;
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,6 +23,8 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
      */
     public FormularioOrdendeTrabajo() {
         initComponents();
+        cargarClientes(); 
+        configurarEventos();
     }
 
  
@@ -29,45 +33,30 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        lblCliente = new javax.swing.JLabel();
-        ComboClientesYVehiculos = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         tablaServiciosSeleccionados = new javax.swing.JScrollPane();
         tablaServicios = new javax.swing.JTable();
-        jPanel4 = new javax.swing.JPanel();
         lblFechaIngreso = new javax.swing.JLabel();
         txtFechaIngreso = new javax.swing.JTextField();
         lblFechaEntrega = new javax.swing.JLabel();
         txtFechaEntrega = new javax.swing.JTextField();
         lblCosto = new javax.swing.JLabel();
-        txtCosto = new javax.swing.JTextField();
         btnRegistrarOrden = new javax.swing.JButton();
         btnCargarServicio = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        comboClientes = new javax.swing.JComboBox<>();
+        txtCostoTotal = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        comboVehiculos = new javax.swing.JComboBox<>();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registrar Orden de Trabajo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        lblCliente.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblCliente.setText("Cliente");
-        jPanel1.add(lblCliente);
-
-        ComboClientesYVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar" }));
-        ComboClientesYVehiculos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ComboClientesYVehiculosActionPerformed(evt);
-            }
-        });
-        jPanel1.add(ComboClientesYVehiculos);
-
-        add(jPanel1);
-
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
-        add(jPanel2);
 
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
+        jPanel4.setLayout(new java.awt.GridLayout(4, 3));
 
         tablaServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -96,26 +85,14 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         });
         tablaServiciosSeleccionados.setViewportView(tablaServicios);
 
-        jPanel3.add(tablaServiciosSeleccionados);
-
-        add(jPanel3);
-
-        jPanel4.setLayout(new java.awt.GridLayout(4, 3));
-
         lblFechaIngreso.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblFechaIngreso.setText("Fecha de ingreso");
-        jPanel4.add(lblFechaIngreso);
-        jPanel4.add(txtFechaIngreso);
 
         lblFechaEntrega.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblFechaEntrega.setText("Fecha de entrega");
-        jPanel4.add(lblFechaEntrega);
-        jPanel4.add(txtFechaEntrega);
 
         lblCosto.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblCosto.setText("Costo");
-        jPanel4.add(lblCosto);
-        jPanel4.add(txtCosto);
 
         btnRegistrarOrden.setBackground(new java.awt.Color(102, 255, 204));
         btnRegistrarOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -125,7 +102,6 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
                 btnRegistrarOrdenActionPerformed(evt);
             }
         });
-        jPanel4.add(btnRegistrarOrden);
 
         btnCargarServicio.setBackground(new java.awt.Color(51, 153, 0));
         btnCargarServicio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -135,165 +111,196 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
                 btnCargarServicioActionPerformed(evt);
             }
         });
-        jPanel4.add(btnCargarServicio);
 
-        add(jPanel4);
+        jLabel1.setText("Auto");
+
+        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboClientesActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Cliente");
+
+        comboVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnRegistrarOrden)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnCargarServicio)
+                                .addGap(946, 946, 946))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblFechaEntrega)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtFechaEntrega))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblFechaIngreso)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtFechaIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblCosto)
+                                                .addGap(34, 34, 34)
+                                                .addComponent(txtCostoTotal))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(93, 93, 93)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(1, 1, 1)
+                                                .addComponent(jLabel2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(37, 37, 37)
+                                                .addComponent(jLabel1)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(tablaServiciosSeleccionados, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addComponent(tablaServiciosSeleccionados, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaIngreso)
+                    .addComponent(txtFechaIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaEntrega)
+                    .addComponent(txtFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblCosto)
+                            .addComponent(txtCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnRegistrarOrden)
+                            .addComponent(btnCargarServicio))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarOrdenActionPerformed
-  
-      DefaultTableModel modelo = (DefaultTableModel) tablaServicios.getModel();
-      String codigoOrden = generarCodigoOrden();
-      boolean haySeleccion = false;
+    String clienteSeleccionado = (String) comboClientes.getSelectedItem();
+    String vehiculoSeleccionado = (String) comboVehiculos.getSelectedItem();
+    String fechaIngreso = txtFechaIngreso.getText().trim();
+    String fechaEntrega = txtFechaEntrega.getText().trim();
+    String costoTotalStr = txtCostoTotal.getText().trim();
 
-       try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden_servicios.txt", true))) {
-        for (int i = 0; i < modelo.getRowCount(); i++) {
-      
-        if (Boolean.TRUE.equals(modelo.getValueAt(i, 4))) {
-            haySeleccion = true;
-
-            String num = modelo.getValueAt(i, 0).toString();
-            String servicio = modelo.getValueAt(i, 1).toString();
-            String descripcion = modelo.getValueAt(i, 2).toString();
-            String precio = modelo.getValueAt(i, 3).toString();
-
-            bw.write(codigoOrden + "," + num + "," + servicio + "," + descripcion + "," + precio);
-            bw.newLine();
-        }
+    // Validaciones
+    if (clienteSeleccionado == null || clienteSeleccionado.equals("Seleccione")) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
     }
 
-    if (haySeleccion) {
-        JOptionPane.showMessageDialog(this, "Orden registrada con código: " + codigoOrden);
-    } else {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un servicio.");
+    if (vehiculoSeleccionado == null || vehiculoSeleccionado.equals("Seleccione")) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un vehículo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
     }
 
-     } catch (IOException e) {
-    JOptionPane.showMessageDialog(this, "Error al guardar la orden: " + e.getMessage());
-    }    
-    }//GEN-LAST:event_btnRegistrarOrdenActionPerformed
-
-    private void ComboClientesYVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboClientesYVehiculosActionPerformed
-
-       ComboClientesYVehiculos.removeAllItems();
-       ComboClientesYVehiculos.addItem("- Seleccione Cliente y Vehículo -");
-
-       String idClienteSeleccionado = "12";
-       String itemSeleccionado = null;
-
-       File archivoClientes = new File("clientes.txt");
-       File archivoVehiculos = new File("vehiculos.txt");
-
-       if (!archivoClientes.exists()) {
-       ComboClientesYVehiculos.addItem("No hay clientes registrados");
-       return;
-       }
-
-     try (BufferedReader brClientes = new BufferedReader(new FileReader(archivoClientes))) {
-     String lineaCliente;
-
-    while ((lineaCliente = brClientes.readLine()) != null) {
-        String[] datosCliente = lineaCliente.split(",");
-        if (datosCliente.length >= 2) {
-            String idCliente = datosCliente[0].trim();
-            String nombreCliente = datosCliente[1].trim();
-            boolean tieneVehiculos = false;
-
-            if (archivoVehiculos.exists()) {
-                try (BufferedReader brVehiculos = new BufferedReader(new FileReader(archivoVehiculos))) {
-                    String lineaVehiculo;
-
-                    while ((lineaVehiculo = brVehiculos.readLine()) != null) {
-                        String[] datosVehiculo = lineaVehiculo.split(",");
-
-                        if (datosVehiculo.length >= 5 && datosVehiculo[0].trim().equals(idCliente)) {
-                            String placa = datosVehiculo[1].trim();
-                            String marca = datosVehiculo[2].trim();
-                            String modelo = datosVehiculo[3].trim();
-                            String año = datosVehiculo[4].trim();
-
-                            String item = idCliente + " - " + nombreCliente + " | " + placa + " - " + marca + " " + modelo + " " + año;
-                            ComboClientesYVehiculos.addItem(item);
-
-                            
-                            if (idCliente.equals(idClienteSeleccionado) && itemSeleccionado == null) {
-                                itemSeleccionado = item;
-                            }
-
-                            tieneVehiculos = true;
-                        }
-                    }
-                } catch (IOException e) {
-                    ComboClientesYVehiculos.addItem("Error al leer vehículos");
-                }
-            }
-
-            if (!tieneVehiculos) {
-                String item = idCliente + " - " + nombreCliente + " | Sin vehículos registrados";
-                ComboClientesYVehiculos.addItem(item);
-
-                if (idCliente.equals(idClienteSeleccionado) && itemSeleccionado == null) {
-                    itemSeleccionado = item;
-                }
-            }
-
-            ComboClientesYVehiculos.addItem("────────────────────");
-        }
+    if (fechaIngreso.isEmpty() || fechaEntrega.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar la fecha de ingreso y de entrega.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
     }
+
+    if (costoTotalStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar el costo total.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    double costoTotal;
+    try {
+        costoTotal = Double.parseDouble(costoTotalStr);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El costo total debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    
+    String numeroOrden = generarNumeroOrden();
+
+    
+    String linea = numeroOrden + "," + clienteSeleccionado + "," + vehiculoSeleccionado + "," + fechaIngreso + "," + fechaEntrega + "," + costoTotal;
 
    
-    if (itemSeleccionado != null) {
-        ComboClientesYVehiculos.setSelectedItem(itemSeleccionado);
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("ordenes.txt", true))) {
+        writer.write(linea);
+        writer.newLine();
+        JOptionPane.showMessageDialog(this, "Orden registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+       
+        comboClientes.setSelectedIndex(0);
+        comboVehiculos.setSelectedIndex(0);
+        txtFechaIngreso.setText("");
+        txtFechaEntrega.setText("");
+        txtCostoTotal.setText("");
+
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "Error al guardar la orden: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-} catch (IOException e) {
-    JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
-}
-    }//GEN-LAST:event_ComboClientesYVehiculosActionPerformed
+    }//GEN-LAST:event_btnRegistrarOrdenActionPerformed
     
     private void btnCargarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarServicioActionPerformed
           cargarServicios();
     }//GEN-LAST:event_btnCargarServicioActionPerformed
 
+    private void comboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboClientesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ComboClientesYVehiculos;
     private javax.swing.JButton btnCargarServicio;
     private javax.swing.JButton btnRegistrarOrden;
+    private javax.swing.JComboBox<String> comboClientes;
+    private javax.swing.JComboBox<String> comboVehiculos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblCosto;
     private javax.swing.JLabel lblFechaEntrega;
     private javax.swing.JLabel lblFechaIngreso;
     private javax.swing.JTable tablaServicios;
     private javax.swing.JScrollPane tablaServiciosSeleccionados;
-    private javax.swing.JTextField txtCosto;
+    private javax.swing.JTextField txtCostoTotal;
     private javax.swing.JTextField txtFechaEntrega;
     private javax.swing.JTextField txtFechaIngreso;
     // End of variables declaration//GEN-END:variables
 
-
-
-    private String generarCodigoOrden() {
-        int contador = 1;
-        File archivo = new File("orden_servicios.txt");
-        if (archivo.exists()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                if (!linea.trim().isEmpty()) {
-                    contador++;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    return "ORD" + String.format("%03d", contador);
-        
-    }
 
     private void cargarServicios() {
   
@@ -304,7 +311,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     ) {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            if (columnIndex == 4) return Boolean.class; // Checkbox
+            if (columnIndex == 4) return Boolean.class; 
             return String.class;
         }
 
@@ -378,10 +385,96 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         }
     }
 
-    txtCosto.setText(String.format("%.2f", total)); 
+    txtCostoTotal.setText(String.format("%.2f", total)); 
     }
+
+    private String generarNumeroOrden() {
+          int contador = 1;
+    File archivo = new File("ordenes.txt");
+    if (archivo.exists()) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                contador++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    return String.format("ORD%03d", contador);
+    }
+
+    private void cargarClientes() {
+        comboClientes.removeAllItems();
+        comboClientes.addItem("Seleccione");
+
+        File archivo = new File("clientes.txt");
+        if (!archivo.exists()) {
+            JOptionPane.showMessageDialog(this, "El archivo de clientes no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (!linea.trim().isEmpty()) {
+                    comboClientes.addItem(linea.trim());
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al leer clientes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     
-   
+    }
+
+   private void configurarEventos() {
+    comboClientes.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            String clienteSeleccionado = (String) comboClientes.getSelectedItem();
+            cargarVehiculosDeCliente(clienteSeleccionado);
+        }
+    });
+   }
+    private void cargarVehiculosDeCliente(String clienteSeleccionado) {
+    comboVehiculos.removeAllItems();
+
+    if (clienteSeleccionado == null || "Seleccione".equals(clienteSeleccionado)) {
+        comboVehiculos.addItem("Seleccione");
+        return;
+    }
+
+    File archivo = new File("vehiculos.txt");
+    if (!archivo.exists()) {
+        JOptionPane.showMessageDialog(this, "El archivo de vehículos no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    boolean encontrado = false;
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = reader.readLine()) != null) {
+            String[] partes = linea.split(",");
+            if (partes.length >= 3) {
+                String placa = partes[0];
+                String marca = partes[1];
+                String clienteAsociado = partes[2];
+
+                if (clienteSeleccionado.equals(clienteAsociado)) {
+                    comboVehiculos.addItem(placa + " - " + marca);
+                    encontrado = true;
+                }
+            }
+        }
+
+        if (!encontrado) {
+            comboVehiculos.addItem("Sin vehículos asociados");
+        }
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer vehículos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }
-    
+
+}
 

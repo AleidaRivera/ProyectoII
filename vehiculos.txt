@@ -1,2 +1,0 @@
-1,34567,Honda,Civic,2022
-2,3456,Honda,Civic,2022

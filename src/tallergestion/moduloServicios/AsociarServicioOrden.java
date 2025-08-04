@@ -177,7 +177,7 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
     boolean haySeleccion = false;
 
   
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden_servicios.txt", true))) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter("orden.txt", true))) {
         for (int i = 0; i < modelo.getRowCount(); i++) {
             Boolean seleccionado = (Boolean) modelo.getValueAt(i, 0);
             if (seleccionado != null && seleccionado) {
