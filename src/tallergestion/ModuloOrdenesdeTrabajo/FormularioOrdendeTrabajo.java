@@ -105,25 +105,28 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
 
         btnCargarServicio.setBackground(new java.awt.Color(51, 153, 0));
         btnCargarServicio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnCargarServicio.setText("Cargar Servicios ");
+        btnCargarServicio.setText("Ver Servicios ");
         btnCargarServicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCargarServicioActionPerformed(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Auto");
 
-        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboClientes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
         comboClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboClientesActionPerformed(evt);
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Cliente");
 
-        comboVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboVehiculos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -132,47 +135,41 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnRegistrarOrden)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnCargarServicio)
-                                .addGap(946, 946, 946))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblFechaEntrega)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtFechaEntrega))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblFechaIngreso)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtFechaIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblCosto)
-                                                .addGap(34, 34, 34)
-                                                .addComponent(txtCostoTotal))))
+                                        .addComponent(lblFechaEntrega)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtFechaEntrega))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(93, 93, 93)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(1, 1, 1)
-                                                .addComponent(jLabel2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(37, 37, 37)
-                                                .addComponent(jLabel1)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(tablaServiciosSeleccionados, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(lblFechaIngreso)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtFechaIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblCosto)
+                                        .addGap(34, 34, 34)
+                                        .addComponent(txtCostoTotal)))
+                                .addGap(59, 59, 59)
+                                .addComponent(btnCargarServicio)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRegistrarOrden))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(94, 94, 94)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 589, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(tablaServiciosSeleccionados, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -187,28 +184,33 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
                     .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addComponent(tablaServiciosSeleccionados, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFechaIngreso)
-                    .addComponent(txtFechaIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFechaEntrega)
-                    .addComponent(txtFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tablaServiciosSeleccionados, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblFechaIngreso)
+                            .addComponent(txtFechaIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtFechaEntrega)
+                                .addGap(1, 1, 1))
+                            .addComponent(lblFechaEntrega))
+                        .addGap(7, 7, 7))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCargarServicio)
+                            .addComponent(btnRegistrarOrden))
+                        .addGap(24, 24, 24)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblCosto)
-                            .addComponent(txtCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnRegistrarOrden)
-                            .addComponent(btnCargarServicio))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblCosto)
+                        .addComponent(txtCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -219,7 +221,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     String fechaEntrega = txtFechaEntrega.getText().trim();
     String costoTotalStr = txtCostoTotal.getText().trim();
 
-    // Validaciones
+   
     if (clienteSeleccionado == null || clienteSeleccionado.equals("Seleccione")) {
         JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         return;
@@ -242,10 +244,12 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
 
     double costoTotal;
     try {
-        costoTotal = Double.parseDouble(costoTotalStr);
+   
+    String costoLimpio = costoTotalStr.replace(",", ".");
+    costoTotal = Double.parseDouble(costoLimpio);
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El costo total debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
+    JOptionPane.showMessageDialog(this, "El costo total debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
     }
 
     
@@ -255,7 +259,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     String linea = numeroOrden + "," + clienteSeleccionado + "," + vehiculoSeleccionado + "," + fechaIngreso + "," + fechaEntrega + "," + costoTotal;
 
    
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter("ordenes.txt", true))) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("orden_servicio.txt", true))) {
         writer.write(linea);
         writer.newLine();
         JOptionPane.showMessageDialog(this, "Orden registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -345,7 +349,7 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
                     numero++,
                     nombre,
                     descripcion,
-                    Double.parseDouble(precio),
+                     Double.parseDouble(precio.replace(".", "").replace(",", ".")),
                     false
                 });
             }
@@ -406,25 +410,28 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
 
     private void cargarClientes() {
         comboClientes.removeAllItems();
-        comboClientes.addItem("Seleccione");
+    comboClientes.addItem("Seleccione");
 
-        File archivo = new File("clientes.txt");
-        if (!archivo.exists()) {
-            JOptionPane.showMessageDialog(this, "El archivo de clientes no existe.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    File archivoClientes = new File("clientes.txt");
+    if (!archivoClientes.exists()) {
+        JOptionPane.showMessageDialog(this, "No existe el archivo de clientes.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                if (!linea.trim().isEmpty()) {
-                    comboClientes.addItem(linea.trim());
-                }
+    try (BufferedReader br = new BufferedReader(new FileReader(archivoClientes))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+
+            if (partes.length >= 2) {
+                String id = partes[0].trim();
+                String nombre = partes[1].trim();
+                comboClientes.addItem(id + " - " + nombre);
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error al leer clientes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer el archivo de clientes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }
 
    private void configurarEventos() {
@@ -436,45 +443,52 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     });
    }
     private void cargarVehiculosDeCliente(String clienteSeleccionado) {
-    comboVehiculos.removeAllItems();
+      comboVehiculos.removeAllItems();
+    comboVehiculos.addItem("Seleccione");
 
-    if (clienteSeleccionado == null || "Seleccione".equals(clienteSeleccionado)) {
-        comboVehiculos.addItem("Seleccione");
+    if (clienteSeleccionado == null || clienteSeleccionado.equals("Seleccione")) {
         return;
     }
 
-    File archivo = new File("vehiculos.txt");
-    if (!archivo.exists()) {
-        JOptionPane.showMessageDialog(this, "El archivo de vehículos no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+    String idCliente = clienteSeleccionado.split(" - ")[0].trim(); 
+
+    File archivoVehiculos = new File("vehiculos.txt");
+    if (!archivoVehiculos.exists()) {
+        JOptionPane.showMessageDialog(this, "No existe el archivo de vehículos.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
     boolean encontrado = false;
 
-    try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(archivoVehiculos))) {
         String linea;
-        while ((linea = reader.readLine()) != null) {
+        while ((linea = br.readLine()) != null) {
             String[] partes = linea.split(",");
-            if (partes.length >= 3) {
-                String placa = partes[0];
-                String marca = partes[1];
-                String clienteAsociado = partes[2];
 
-                if (clienteSeleccionado.equals(clienteAsociado)) {
-                    comboVehiculos.addItem(placa + " - " + marca);
+            if (partes.length >= 5) {
+                String clienteID = partes[0].trim();   
+                String placa = partes[1].trim();
+                String marca = partes[2].trim();
+                String modelo = partes[3].trim();
+                String anio = partes[4].trim();
+
+                if (clienteID.equals(idCliente)) {
+                    String descripcionVehiculo = placa + " - " + marca + " " + modelo + " (" + anio + ")";
+                    comboVehiculos.addItem(descripcionVehiculo);
                     encontrado = true;
                 }
             }
         }
 
         if (!encontrado) {
-            comboVehiculos.addItem("Sin vehículos asociados");
+            JOptionPane.showMessageDialog(this, "Este cliente no tiene vehículos registrados.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
 
     } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Error al leer vehículos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
-
 }
+
+
 

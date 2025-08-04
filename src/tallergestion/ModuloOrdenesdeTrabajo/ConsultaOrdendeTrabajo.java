@@ -24,6 +24,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        btnBuscarOrden = new javax.swing.JButton();
         txtNumeroOrden = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaOrdenesServicios = new javax.swing.JTable();
@@ -36,6 +37,14 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar ordenes por criterio", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 2, 3));
+
+        btnBuscarOrden.setText("Buscar");
+        btnBuscarOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarOrdenActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnBuscarOrden);
         jPanel2.add(txtNumeroOrden);
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultado de busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
@@ -140,8 +149,8 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
     if (opcion != JOptionPane.YES_OPTION) return;
 
-    File archivoOriginal = new File("ordenes.txt");
-    File archivoTemporal = new File("ordenes.txt");
+    File archivoOriginal = new File("orden_servicio.txt");
+    File archivoTemporal = new File("orden_servicio.txt");
 
     try (BufferedReader br = new BufferedReader(new FileReader(archivoOriginal));
          BufferedWriter bw = new BufferedWriter(new FileWriter(archivoTemporal))) {
@@ -186,9 +195,62 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
    
     cargarOrdenes(); 
     }//GEN-LAST:event_btnCerrarOrdenActionPerformed
+
+    private void btnBuscarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarOrdenActionPerformed
+      String idBusqueda = txtNumeroOrden.getText().trim(); 
+
+    if (idBusqueda.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un número de orden.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    String rutaArchivo = "orden_servicio.txt"; 
+
+    DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
+    modelo.setRowCount(0); // Limpia la tabla
+
+    try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+        String linea;
+        boolean encontrado = false;
+
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+
+            if (partes.length == 6 && partes[0].trim().equalsIgnoreCase(idBusqueda)) {
+                String idOrden = partes[0].trim();
+                String nombreCliente = partes[1].trim();  // Solo el nombre del cliente
+                String fechaIngreso = partes[3].trim();
+                String fechaEntrega = partes[4].trim();
+                String total = partes[5].trim();
+                String estado = "Activo"; // Asignado por defecto
+
+                modelo.addRow(new Object[]{
+                    idOrden,
+                    nombreCliente,
+                    fechaIngreso,
+                    fechaEntrega,
+                    estado,
+                    total
+                });
+
+                encontrado = true;
+                break; // si quieres mostrar solo una coincidencia
+            }
+        }
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(this, "No se encontró una orden con ese ID.");
+        }
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage());
+    }
+
+    }//GEN-LAST:event_btnBuscarOrdenActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscarOrden;
     private javax.swing.JButton btnCerrarOrden;
     private javax.swing.JButton btnModificarOrden;
     private javax.swing.JPanel jPanel1;
@@ -200,7 +262,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void cargarOrdenes() {
-       DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
+    DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
     modelo.setRowCount(0); 
 
     File archivo = new File("orden_servicios.txt");
