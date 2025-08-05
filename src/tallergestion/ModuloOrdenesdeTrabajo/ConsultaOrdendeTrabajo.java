@@ -256,6 +256,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
     private void btnBuscarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarOrdenActionPerformed
    
+
     String idBusqueda = txtNumeroOrden.getText().trim();
     String rutaArchivo = "orden_servicio.txt";
     DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
@@ -270,7 +271,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         if (partes.length >= 7) {
             String numeroOrden = partes[0].trim();
 
-            // Si se ingresó un número de orden y no coincide, lo salta
+            
             if (!idBusqueda.isEmpty() && !numeroOrden.equalsIgnoreCase(idBusqueda)) {
                 continue;
             }
