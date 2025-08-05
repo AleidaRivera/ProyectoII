@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -132,9 +130,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -259,26 +255,26 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCerrarOrdenActionPerformed
 
     private void btnBuscarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarOrdenActionPerformed
+   
     String idBusqueda = txtNumeroOrden.getText().trim();
-if (idBusqueda.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Debe ingresar un número de orden.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
+    String rutaArchivo = "orden_servicio.txt";
+    DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
+    modelo.setRowCount(0);
 
-String rutaArchivo = "orden_servicio.txt";
-DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
-modelo.setRowCount(0);
-
-try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
     String linea;
     boolean encontrado = false;
 
     while ((linea = br.readLine()) != null) {
         String[] partes = linea.split(",");
-        if (partes.length >= 7 && partes[0].trim().equalsIgnoreCase(idBusqueda)) {
+        if (partes.length >= 7) {
             String numeroOrden = partes[0].trim();
-            
-            // Extraer solo el nombre del cliente
+
+            // Si se ingresó un número de orden y no coincide, lo salta
+            if (!idBusqueda.isEmpty() && !numeroOrden.equalsIgnoreCase(idBusqueda)) {
+                continue;
+            }
+
             String[] datosCliente = partes[1].trim().split(" - ");
             String cliente = (datosCliente.length > 1) ? datosCliente[1].trim() : partes[1].trim();
 
@@ -300,18 +296,18 @@ try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
                 estado,
                 costoTotal
             });
+
             encontrado = true;
-            break;
         }
     }
 
     if (!encontrado) {
-        JOptionPane.showMessageDialog(this, "No se encontró una orden con ese ID.");
+        JOptionPane.showMessageDialog(this, "No se encontraron órdenes con ese número.");
     }
 
-} catch (IOException e) {
+    } catch (IOException e) {
     JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage());
-}
+        }
     }//GEN-LAST:event_btnBuscarOrdenActionPerformed
     
 
