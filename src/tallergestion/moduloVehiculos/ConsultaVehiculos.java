@@ -253,7 +253,63 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarVehiculoActionPerformed
 
     private void btnEliminarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarVehiculoActionPerformed
-        // TODO add your handling code here:
+       String placaEliminar = txtPlaca.getText().trim();
+
+    if (placaEliminar.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese la placa del vehículo a eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    File archivo = new File("vehiculos.txt");
+    if (!archivo.exists()) {
+        JOptionPane.showMessageDialog(this, "No existe el archivo vehiculos.txt", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        List<String> lineas = new ArrayList<>();
+        boolean encontrado = false;
+
+        BufferedReader br = new BufferedReader(new FileReader(archivo));
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+            if (partes.length >= 5) {
+                String placaActual = partes[1].trim();
+                if (placaActual.equalsIgnoreCase(placaEliminar)) {
+                    encontrado = true;
+                    
+                    continue;
+                }
+            }
+            lineas.add(linea);
+        }
+        br.close();
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(this, "Vehículo con placa " + placaEliminar + " no encontrado.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+        for (String l : lineas) {
+            bw.write(l);
+            bw.newLine();
+        }
+        bw.close();
+
+        JOptionPane.showMessageDialog(this, "Vehículo eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        // Opcional: Limpiar campos y refrescar tabla
+        txtPlaca.setText("");
+        txtMarca.setText("");
+        txtModelo.setText("");
+        txtAño.setText("");
+        // Aquí podrías llamar a un método para refrescar la tabla, si tienes uno
+
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "Error al eliminar el vehículo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnEliminarVehiculoActionPerformed
 
 
