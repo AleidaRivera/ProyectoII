@@ -277,10 +277,10 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
     }
-    return "ORD" + String.format("%03d", contador);
+    return "SERV" + String.format("%03d", contador);
         }
         
 

@@ -126,6 +126,7 @@ public class Vista extends javax.swing.JFrame {
         MenuItemSalir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         MenuItemAcercade = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema Gestion Taller");
@@ -266,6 +267,14 @@ public class Vista extends javax.swing.JFrame {
             }
         });
         jMenu2.add(MenuItemAcercade);
+
+        jMenuItem1.setText("Manual de Uso");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
 
         jMenuBar1.add(jMenu2);
 
@@ -430,6 +439,46 @@ public class Vista extends javax.swing.JFrame {
 });
     }//GEN-LAST:event_btnConsultarOrdenActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+       String manual = """
+        Manual de Uso - Taller de Servicios Mecánicos
+        
+        1. Para registrar un nuevo vehículo:
+           - Ve al módulo Vehículos.
+           - Haz clic en 'Agregar' y completa los datos solicitados.
+        
+        2. Para buscar un vehículo:
+           - Ingresa el ID del cliente en el campo de búsqueda.
+           - Presiona el botón 'Buscar'.
+
+        3. Para modificar datos de un vehículo:
+           - Selecciona el vehículo en la tabla.
+           - Modifica los campos y haz clic en 'Modificar'.
+
+        4. Para eliminar un vehículo:
+           - Ingresa la placa del vehículo.
+           - Haz clic en 'Eliminar'.
+
+        5. Para gestionar órdenes de servicio:
+           - Accede al módulo de Órdenes.
+           - Crea, modifica o cierra órdenes según sea necesario.
+
+        6. Para generar facturas:
+           - Selecciona una orden en la tabla.
+           - Haz clic en 'Cerrar orden'.
+
+        7. Contacto:
+           - Soporte técnico: soporte@tallermecanico.com
+           - Teléfono: +506 6362 8442
+                       +506 50127059
+
+        ¡Gracias por usar nuestro sistema!
+        """;
+
+    JOptionPane.showMessageDialog(this, manual, "Manual de Uso", JOptionPane.INFORMATION_MESSAGE);
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -487,6 +536,7 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanelvista;
     // End of variables declaration//GEN-END:variables
 }
