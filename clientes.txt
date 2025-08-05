@@ -1,2 +1,1 @@
-2,Ronny Rodriguez Gomez,86827531,Alajuela
-1,Aleida Rivera Borge,87635290,Pital
+1,Ronny Rodriguez,86827532,Alajuela

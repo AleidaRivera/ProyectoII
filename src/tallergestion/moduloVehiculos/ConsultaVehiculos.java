@@ -4,8 +4,14 @@ package tallergestion.moduloVehiculos;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -94,6 +100,11 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         btnModificarVehiculo.setBackground(new java.awt.Color(102, 255, 204));
         btnModificarVehiculo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnModificarVehiculo.setText("Modificar");
+        btnModificarVehiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarVehiculoActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnModificarVehiculo);
 
         btnCerrar.setBackground(new java.awt.Color(255, 102, 102));
@@ -109,6 +120,11 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         btnEliminarVehiculo.setBackground(new java.awt.Color(255, 255, 51));
         btnEliminarVehiculo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnEliminarVehiculo.setText("Eliminar");
+        btnEliminarVehiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarVehiculoActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnEliminarVehiculo);
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
@@ -138,9 +154,9 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         if (contenedor instanceof JPanel) {
         CardLayout cl = (CardLayout) contenedor.getLayout();
          cl.show(contenedor, "inicio");
-}
+        
     }//GEN-LAST:event_btnCerrarActionPerformed
-
+}
     private void btnBuscarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVehiculoActionPerformed
       String idTexto = txtIdCliente.getText().trim();
     if (idTexto.isEmpty()) {
@@ -159,13 +175,13 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
                 if (datos.length >= 5) {
                     int idArchivo = Integer.parseInt(datos[0]);
                     if (idArchivo == idCliente) {
-                        String placa = datos[1];      // CAMBIO: ahora es placa
+                        String placa = datos[1];      
                         String marca = datos[2];
                         String modeloVeh = datos[3];
                         String anio = datos[4];
-                        // CAMBIO: agregar con el ID del cliente y la placa en su lugar correcto
+                      
                         modelo.addRow(new Object[]{idArchivo, marca, modeloVeh, anio, placa});
-                        //                         ↑ ID Cliente    ↑ Marca ↑ Modelo ↑ Año ↑ Placa
+                                           
                         encontrado = true;
                     }
                 }
@@ -180,6 +196,65 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "El ID debe ser un número.");
     }
     }//GEN-LAST:event_btnBuscarVehiculoActionPerformed
+
+    private void btnModificarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarVehiculoActionPerformed
+    String placa = txtPlaca.getText().trim();
+    String marca = txtMarca.getText().trim();
+    String modelo = txtModelo.getText().trim();
+    String anio = txtAño.getText().trim();
+
+    if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || anio.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+    }
+
+    File archivo = new File("vehiculos.txt");
+    if (!archivo.exists()) {
+    JOptionPane.showMessageDialog(this, "No existe el archivo vehiculos.txt", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+    }
+
+    try {
+    List<String> lineas = new ArrayList<>();
+    boolean encontrado = false;
+
+    BufferedReader br = new BufferedReader(new FileReader(archivo));
+    String linea;
+    while ((linea = br.readLine()) != null) {
+        String[] partes = linea.split(",");
+        if (partes.length >= 5) {
+            String placaActual = partes[1].trim();  
+            if (placaActual.equalsIgnoreCase(placa)) {
+                linea = partes[0] + "," + placa + "," + marca + "," + modelo + "," + anio;
+                encontrado = true;
+            }
+        }
+        lineas.add(linea);
+    }
+    br.close();
+
+    if (!encontrado) {
+        JOptionPane.showMessageDialog(this, "Vehículo con placa " + placa + " no encontrado.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+
+    BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+    for (String l : lineas) {
+        bw.write(l);
+        bw.newLine();
+    }
+    bw.close();
+
+    JOptionPane.showMessageDialog(this, "Vehículo modificado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (IOException ex) {
+    JOptionPane.showMessageDialog(this, "Error al modificar el vehículo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_btnModificarVehiculoActionPerformed
+
+    private void btnEliminarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarVehiculoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarVehiculoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -203,7 +278,6 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
     private javax.swing.JTextField txtPlaca;
     // End of variables declaration//GEN-END:variables
 
-    
+
 }
     
-
