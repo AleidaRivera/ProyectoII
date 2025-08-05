@@ -284,10 +284,6 @@ public class AsociarServicioOrden extends javax.swing.JPanel {
         }
         
 
-
-    
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsociarServicio;
     private javax.swing.JButton btnCargarServicios;

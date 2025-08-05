@@ -73,7 +73,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                true, false, false, true, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {

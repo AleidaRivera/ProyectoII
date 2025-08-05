@@ -154,13 +154,32 @@ public class FormularioServicio extends javax.swing.JPanel {
 }
 
     private int generarId() {
-    int id = 1;
+    
+    int ultimoId = 0;
+
     try (BufferedReader br = new BufferedReader(new FileReader("servicios.txt"))) {
-        while (br.readLine() != null) id++;
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            if (!linea.trim().isEmpty()) {
+                String[] partes = linea.split(",");
+                if (partes.length > 0) {
+                    try {
+                        int id = Integer.parseInt(partes[0].trim());
+                        if (id > ultimoId) {
+                            ultimoId = id;
+                        }
+                    } catch (NumberFormatException e) {
+                        // Ignorar líneas mal formateadas
+                    }
+                }
+            }
+        }
     } catch (IOException e) {
-       
+        // El archivo no existe o no se puede leer
     }
-    return id;
+
+    return ultimoId + 1;
+     
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCerrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrar1ActionPerformed
