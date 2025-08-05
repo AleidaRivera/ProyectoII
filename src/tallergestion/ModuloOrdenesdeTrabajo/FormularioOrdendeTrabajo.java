@@ -233,76 +233,76 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
         String fechaEntrega = txtFechaEntrega.getText().trim();
         String costoTotalStr = txtCostoTotal.getText().trim();
 
-if (clienteSeleccionado == null || clienteSeleccionado.equals("Seleccione")) {
-    JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
+         if (clienteSeleccionado == null || clienteSeleccionado.equals("Seleccione")) {
+         JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+         return;
+         }
 
-if (vehiculoSeleccionado == null || vehiculoSeleccionado.equals("Seleccione")) {
-    JOptionPane.showMessageDialog(this, "Debe seleccionar un vehículo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
+         if (vehiculoSeleccionado == null || vehiculoSeleccionado.equals("Seleccione")) {
+         JOptionPane.showMessageDialog(this, "Debe seleccionar un vehículo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+         return;
+        }
 
-if (fechaIngreso.isEmpty() || fechaEntrega.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Debe ingresar la fecha de ingreso y de entrega.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
+        if (fechaIngreso.isEmpty() || fechaEntrega.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar la fecha de ingreso y de entrega.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
 
-if (costoTotalStr.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Debe ingresar el costo total.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
+        if ( costoTotalStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar el costo total.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
 
-double costoTotal;
-try {
-    String costoLimpio = costoTotalStr.replace(",", ".");
-    costoTotal = Double.parseDouble(costoLimpio);
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(this, "El costo total debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
+        double costoTotal;
+        try {
+        String costoLimpio = costoTotalStr.replace(",", ".");
+        costoTotal = Double.parseDouble(costoLimpio);
+        } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El costo total debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+         }
 
 
-List<String> serviciosSeleccionados = new ArrayList<>();
-DefaultTableModel modeloServicios = (DefaultTableModel) tablaServicios.getModel();
-int filas = modeloServicios.getRowCount();
+        List<String> serviciosSeleccionados = new ArrayList<>();
+        DefaultTableModel modeloServicios = (DefaultTableModel) tablaServicios.getModel();
+        int filas = modeloServicios.getRowCount();
 
-for (int i = 0; i < filas; i++) {
-    Boolean seleccionado = (Boolean) modeloServicios.getValueAt(i, 4); 
-    if (seleccionado != null && seleccionado) {
+        for (int i = 0; i < filas; i++) {
+        Boolean seleccionado = (Boolean) modeloServicios.getValueAt(i, 4); 
+        if (seleccionado != null && seleccionado) {
         String descripcionServicio = modeloServicios.getValueAt(i, 2).toString(); 
         serviciosSeleccionados.add(descripcionServicio);
-    }
-}
+           }
+        }
 
-if (serviciosSeleccionados.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un servicio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
+        if (serviciosSeleccionados.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un servicio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+           }
 
-String numeroOrden = generarNumeroOrden();
-String serviciosConcatenados = String.join(";", serviciosSeleccionados);
+        String numeroOrden = generarNumeroOrden();
+        String serviciosConcatenados = String.join(";", serviciosSeleccionados);
 
-String linea = numeroOrden + "," + clienteSeleccionado + "," + vehiculoSeleccionado + "," + serviciosConcatenados + "," + fechaIngreso + "," + fechaEntrega + "," + costoTotal;
+        String linea = numeroOrden + "," + clienteSeleccionado + "," + vehiculoSeleccionado + "," + serviciosConcatenados + "," + fechaIngreso + "," + fechaEntrega + "," + costoTotal;
 
-try (BufferedWriter writer = new BufferedWriter(new FileWriter("orden_servicio.txt", true))) {
-    writer.write(linea);
-    writer.newLine();
-    JOptionPane.showMessageDialog(this, "Orden registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("orden_servicio.txt", true))) {
+        writer.write(linea);
+        writer.newLine();
+        JOptionPane.showMessageDialog(this, "Orden registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-    comboClientes.setSelectedIndex(0);
-    comboVehiculos.setSelectedIndex(0);
+        comboClientes.setSelectedIndex(0);
+        comboVehiculos.setSelectedIndex(0);
     
-    for (int i = 0; i < filas; i++) {
+        for (int i = 0; i < filas; i++) {
         modeloServicios.setValueAt(false, i, 4);
-    }
-    txtFechaIngreso.setText("");
-    txtFechaEntrega.setText("");
-    txtCostoTotal.setText("");
+            }
+        txtFechaIngreso.setText("");
+        txtFechaEntrega.setText("");
+        txtCostoTotal.setText("");
 
-} catch (IOException ex) {
+    } catch (IOException ex) {
     JOptionPane.showMessageDialog(this, "Error al guardar la orden: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-}
+    }
 
     }//GEN-LAST:event_btnRegistrarOrdenActionPerformed
     
