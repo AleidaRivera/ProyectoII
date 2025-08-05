@@ -1,1 +1,2 @@
 1,Pintura,Pintado manualmente,200.000,Pintura,Activo
+2,Cambio de Llanatas,Cambio de Llantas Traseras,20.000,Cambio de Llanatas,Activo

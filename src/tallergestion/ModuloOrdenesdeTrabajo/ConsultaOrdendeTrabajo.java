@@ -1,15 +1,20 @@
 
 package tallergestion.ModuloOrdenesdeTrabajo;
 
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
@@ -189,7 +194,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarOrdenActionPerformed
 
     private void btnCerrarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarOrdenActionPerformed
-      int filaSeleccionada = tablaOrdenesServicios.getSelectedRow();
+    int filaSeleccionada = tablaOrdenesServicios.getSelectedRow();
 
     if (filaSeleccionada == -1) {
         JOptionPane.showMessageDialog(this, "Debe seleccionar una orden para cerrar.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -205,7 +210,9 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     if (opcion != JOptionPane.YES_OPTION) return;
 
     File archivoOriginal = new File("orden_servicio.txt");
-    File archivoTemporal = new File("orden_servicio.txt");
+    File archivoTemporal = new File("orden_servicio_temp.txt");
+
+    List<String[]> ordenCerrada = new ArrayList<>();
 
     try (BufferedReader br = new BufferedReader(new FileReader(archivoOriginal));
          BufferedWriter bw = new BufferedWriter(new FileWriter(archivoTemporal))) {
@@ -213,22 +220,17 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         String linea;
         while ((linea = br.readLine()) != null) {
             String[] partes = linea.split(",");
-            if (partes.length >= 5) {
-                String ord = partes[0].trim();
+            if (partes.length >= 6) {
+                String id = partes[0].trim();
+                if (id.equals(codigoOrden)) {
+                    // Cambiar estado a Completada
+                    partes[4] = "Completada"; // Estado
+                    ordenCerrada.add(partes); // Guardar para mostrar factura
 
-                
-                if (ord.equals(codigoOrden)) {
-                    String idServicio = partes[1].trim();
-                    String nombre = partes[2].trim();
-                    String descripcion = partes[3].trim();
-                    String precio = partes[4].trim();
-                    String categoria = (partes.length > 5) ? partes[5].trim() : "No definido";
-
-                    
-                    String nuevaLinea = ord + "," + idServicio + "," + nombre + "," + descripcion + "," + precio + "," + categoria + ",Completada";
+                    // Reescribir línea modificada
+                    String nuevaLinea = String.join(",", partes);
                     bw.write(nuevaLinea);
                 } else {
-                   
                     bw.write(linea);
                 }
                 bw.newLine();
@@ -240,15 +242,18 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         return;
     }
 
-    
+    // Reemplazar archivo original
     if (archivoOriginal.delete()) {
         archivoTemporal.renameTo(archivoOriginal);
     }
 
+    // Mostrar factura
+    generarFactura(codigoOrden, ordenCerrada);
+
     JOptionPane.showMessageDialog(this, "Orden " + codigoOrden + " cerrada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-   
-    cargarOrdenes(); 
+    cargarOrdenes();
+
     }//GEN-LAST:event_btnCerrarOrdenActionPerformed
 
     private void btnBuscarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarOrdenActionPerformed
@@ -273,11 +278,11 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
             if (partes.length == 6 && partes[0].trim().equalsIgnoreCase(idBusqueda)) {
                 String idOrden = partes[0].trim();
-                String nombreCliente = partes[1].trim();  // Solo el nombre del cliente
+                String nombreCliente = partes[1].trim(); 
                 String fechaIngreso = partes[3].trim();
                 String fechaEntrega = partes[4].trim();
                 String total = partes[5].trim();
-                String estado = "Activo"; // Asignado por defecto
+                String estado = "Activo"; 
 
                 modelo.addRow(new Object[]{
                     idOrden,
@@ -289,7 +294,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
                 });
 
                 encontrado = true;
-                break; // si quieres mostrar solo una coincidencia
+                break; 
             }
         }
 
@@ -346,6 +351,45 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Error al cargar órdenes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
     }
+
+    private void generarFactura(String codigoOrden, List<String[]> serviciosOrden) {
+        
+       
+    if (serviciosOrden == null || serviciosOrden.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "No hay datos para la factura.", "Factura vacía", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    StringBuilder factura = new StringBuilder();
+
+    for (String[] partes : serviciosOrden) {
+        if (!partes[0].equals(codigoOrden)) continue;
+
+        String cliente = partes[1].trim();
+        String fechaIngreso = partes[2].trim();
+        String fechaEntrega = partes[3].trim();
+        String estado = partes[4].trim();
+        String costoTotal = partes[5].trim();
+
+        factura.append("======= FACTURA DE ORDEN =======\n");
+        factura.append("Número de orden: ").append(codigoOrden).append("\n");
+        factura.append("Cliente: ").append(cliente).append("\n");
+        factura.append("Fecha de ingreso: ").append(fechaIngreso).append("\n");
+        factura.append("Fecha de entrega: ").append(fechaEntrega).append("\n");
+        factura.append("Estado: ").append("Completada").append("\n");
+        factura.append("------\n");
+        factura.append("Total a pagar: ₡").append(costoTotal).append("\n");
+        factura.append("\n");
+        break;
+    }
+
+    JTextArea textArea = new JTextArea(factura.toString());
+    textArea.setEditable(false);
+    JScrollPane scrollPane = new JScrollPane(textArea);
+    scrollPane.setPreferredSize(new Dimension(500, 300));
+
+    JOptionPane.showMessageDialog(null, scrollPane, "Factura de Orden " + codigoOrden, JOptionPane.INFORMATION_MESSAGE);
+}
 }
  
 

@@ -1,1 +1,4 @@
-ORD001,2 - Ronny Rodriguez Gomez,4/8/2025,6/8/2025,Activo,200000.0
+ORD001,2 - Ronny Rodriguez Gomez,4/8/2025,5/8/2015,Completada,20000.0,Completada
+ORD001,1 - Aleida Rivera Borge,45678 - Toyota Hilux (2018),4/8/2025,Completada,20000.0,Completada
+ORD001,2 - Ronny Rodriguez Gomez,23456 - Audi xtr (2017),4/8/2025,Completada,20000.0
+ORD001,2 - Ronny Rodriguez Gomez,23456 - Audi xtr (2017),4/8/2025,Completada,220000.0

@@ -68,7 +68,7 @@ public class FormularioServicio extends javax.swing.JPanel {
             }
         });
 
-        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mecanica", "Pintura", "Cambio de Llanatas", "Otros" }));
+        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mecanica", "Pintura", "Cambio de Llantas", "Otros" }));
         comboTipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboTipoActionPerformed(evt);

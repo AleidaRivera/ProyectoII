@@ -173,7 +173,7 @@
           <StringArray count="4">
             <StringItem index="0" value="Mecanica"/>
             <StringItem index="1" value="Pintura"/>
-            <StringItem index="2" value="Cambio de Llanatas"/>
+            <StringItem index="2" value="Cambio de Llantas"/>
             <StringItem index="3" value="Otros"/>
           </StringArray>
         </Property>
