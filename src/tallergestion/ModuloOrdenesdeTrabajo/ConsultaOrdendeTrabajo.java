@@ -259,58 +259,59 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCerrarOrdenActionPerformed
 
     private void btnBuscarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarOrdenActionPerformed
-     
-       String idBusqueda = txtNumeroOrden.getText().trim();
-    if (idBusqueda.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar un número de orden.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    
-    String rutaArchivo = "orden_servicio.txt";
-    DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
-    modelo.setRowCount(0);
-    
-    try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
-        String linea;
-        boolean encontrado = false;
-        
-        while ((linea = br.readLine()) != null) {
-            String[] partes = linea.split(",");
-            if (partes.length >= 7 && partes[0].trim().equalsIgnoreCase(idBusqueda)) {
-                String numeroOrden = partes[0].trim();
-                String cliente = partes[1].trim();
-                String vehiculo = partes[2].trim();
-                String servicios = partes[3].trim();
-                String fechaIngreso = partes[4].trim();
-                String fechaEntrega = partes[5].trim();
-                String costoTotal = partes[6].trim();
-                String estado = "Activo"; 
-                
-                
-                String descripcionServicios = servicios.replace(";", ", ");
-                
-               
-                modelo.addRow(new Object[]{
-                    numeroOrden,        
-                    cliente,           
-                    descripcionServicios,
-                    fechaIngreso,      
-                    fechaEntrega,       
-                    estado,            
-                    costoTotal          
-                });
-                encontrado = true;
-                break;
-            }
+    String idBusqueda = txtNumeroOrden.getText().trim();
+if (idBusqueda.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Debe ingresar un número de orden.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+    return;
+}
+
+String rutaArchivo = "orden_servicio.txt";
+DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
+modelo.setRowCount(0);
+
+try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+    String linea;
+    boolean encontrado = false;
+
+    while ((linea = br.readLine()) != null) {
+        String[] partes = linea.split(",");
+        if (partes.length >= 7 && partes[0].trim().equalsIgnoreCase(idBusqueda)) {
+            String numeroOrden = partes[0].trim();
+            
+            // Extraer solo el nombre del cliente
+            String[] datosCliente = partes[1].trim().split(" - ");
+            String cliente = (datosCliente.length > 1) ? datosCliente[1].trim() : partes[1].trim();
+
+            String vehiculo = partes[2].trim();
+            String servicios = partes[3].trim();
+            String fechaIngreso = partes[4].trim();
+            String fechaEntrega = partes[5].trim();
+            String costoTotal = partes[6].trim();
+            String estado = "Activo";
+
+            String descripcionServicios = servicios.replace(";", ", ");
+
+            modelo.addRow(new Object[]{
+                numeroOrden,
+                cliente,
+                descripcionServicios,
+                fechaIngreso,
+                fechaEntrega,
+                estado,
+                costoTotal
+            });
+            encontrado = true;
+            break;
         }
-        
-        if (!encontrado) {
-            JOptionPane.showMessageDialog(this, "No se encontró una orden con ese ID.");
-        }
-        
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage());
     }
+
+    if (!encontrado) {
+        JOptionPane.showMessageDialog(this, "No se encontró una orden con ese ID.");
+    }
+
+} catch (IOException e) {
+    JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage());
+}
     }//GEN-LAST:event_btnBuscarOrdenActionPerformed
     
 
