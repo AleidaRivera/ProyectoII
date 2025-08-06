@@ -1,2 +1,4 @@
 1,Ronny Rodriguez,86827532,Alajuela
-2,Aleida Rivera,87365210,Pital
+2,Aleida Rivera,50127059,Pital
+55,Marco Rodriguez Rodriguez,71519211,Grecia
+48,Erick Mata Guzman,89900145,Cruce los chiles

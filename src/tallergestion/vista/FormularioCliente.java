@@ -45,8 +45,6 @@ public class FormularioCliente extends javax.swing.JPanel {
         lblID1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblID1.setText("ID Cliente");
         add(lblID1);
-
-        txtIdCliente.setBackground(new java.awt.Color(255, 255, 255));
         add(txtIdCliente);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -77,6 +75,7 @@ public class FormularioCliente extends javax.swing.JPanel {
 
         btnRegistrar.setBackground(new java.awt.Color(51, 255, 204));
         btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,6 +86,7 @@ public class FormularioCliente extends javax.swing.JPanel {
 
         btnCerrar.setBackground(new java.awt.Color(255, 102, 102));
         btnCerrar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

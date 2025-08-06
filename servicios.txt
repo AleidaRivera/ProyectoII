@@ -1,3 +1,5 @@
 1,Mecanica,Mecanica General,10.000,Mecanica,Activo
 2,Pintura,pintura ecomica,10.000,Pintura,Activo
 3,Cambio de Llantas,Cambio de llantas traseras,10.000,Cambio de Llantas,Activo
+4,Cambio de Llantas,Pital,15000,Cambio de Llantas,Activo
+5,Otros,Limpieza profunda,12000,Otros,Activo

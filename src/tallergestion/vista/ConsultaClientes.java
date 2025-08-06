@@ -50,7 +50,7 @@ public class ConsultaClientes extends javax.swing.JPanel {
         txtBuscarCliente = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Consultar Clientes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 24))); // NOI18N
-        setLayout(new java.awt.BorderLayout(2, 2));
+        setLayout(new java.awt.BorderLayout());
 
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -99,6 +99,7 @@ public class ConsultaClientes extends javax.swing.JPanel {
 
         btnModificar.setBackground(new java.awt.Color(51, 255, 204));
         btnModificar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(255, 255, 255));
         btnModificar.setText("Modificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,6 +110,7 @@ public class ConsultaClientes extends javax.swing.JPanel {
 
         btnCerrar.setBackground(new java.awt.Color(255, 102, 102));
         btnCerrar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,8 +119,9 @@ public class ConsultaClientes extends javax.swing.JPanel {
         });
         jPanel1.add(btnCerrar);
 
-        btnEliminar.setBackground(new java.awt.Color(255, 255, 0));
+        btnEliminar.setBackground(new java.awt.Color(0, 153, 153));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,11 +132,13 @@ public class ConsultaClientes extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
 
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Buscar por ID Cliente");
         jPanel2.add(jLabel1);
 
-        btnBuscarCliente.setBackground(new java.awt.Color(153, 204, 255));
+        btnBuscarCliente.setBackground(new java.awt.Color(255, 255, 102));
         btnBuscarCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBuscarCliente.setText("Buscar");
         btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {

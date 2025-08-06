@@ -99,6 +99,7 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
 
         btnModificarVehiculo.setBackground(new java.awt.Color(102, 255, 204));
         btnModificarVehiculo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnModificarVehiculo.setForeground(new java.awt.Color(255, 255, 255));
         btnModificarVehiculo.setText("Modificar");
         btnModificarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,6 +110,7 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
 
         btnCerrar.setBackground(new java.awt.Color(255, 102, 102));
         btnCerrar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,8 +119,9 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         });
         jPanel1.add(btnCerrar);
 
-        btnEliminarVehiculo.setBackground(new java.awt.Color(255, 255, 51));
+        btnEliminarVehiculo.setBackground(new java.awt.Color(0, 153, 153));
         btnEliminarVehiculo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnEliminarVehiculo.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarVehiculo.setText("Eliminar");
         btnEliminarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,12 +132,15 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
 
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Buscar por ID Cliente");
         jPanel2.add(jLabel5);
 
-        btnBuscarVehiculo.setBackground(new java.awt.Color(153, 204, 255));
+        btnBuscarVehiculo.setBackground(new java.awt.Color(0, 153, 153));
         btnBuscarVehiculo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnBuscarVehiculo.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscarVehiculo.setText("Buscar");
         btnBuscarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,6 +148,13 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
             }
         });
         jPanel2.add(btnBuscarVehiculo);
+
+        txtIdCliente.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtIdCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdClienteActionPerformed(evt);
+            }
+        });
         jPanel2.add(txtIdCliente);
 
         add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -311,6 +324,10 @@ public class ConsultaVehiculos extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Error al eliminar el vehículo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnEliminarVehiculoActionPerformed
+
+    private void txtIdClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdClienteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
