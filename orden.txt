@@ -1,2 +1,0 @@
-ORD001,1,Mecanica,Mecanica General,10.000,Mecanica,Activo
-SERV001,2,Pintura,pintura ecomica,10.000,Pintura,Activo

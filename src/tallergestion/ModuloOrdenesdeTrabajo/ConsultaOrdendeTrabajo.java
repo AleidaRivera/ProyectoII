@@ -135,60 +135,87 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarOrdenActionPerformed
+    
+  
+        int filaSeleccionada = tablaOrdenesServicios.getSelectedRow();
+
+if (filaSeleccionada == -1) {
+    JOptionPane.showMessageDialog(this, "Debe seleccionar una fila de la tabla para modificar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+    return;
+}
+
+String idOrden = tablaOrdenesServicios.getValueAt(filaSeleccionada, 0).toString();
+String cliente = tablaOrdenesServicios.getValueAt(filaSeleccionada, 1).toString();
+String vehiculo = tablaOrdenesServicios.getValueAt(filaSeleccionada, 2).toString();
+String fechaIngreso = tablaOrdenesServicios.getValueAt(filaSeleccionada, 3).toString();
+String fechaEntrega = tablaOrdenesServicios.getValueAt(filaSeleccionada, 4).toString();
+String costoTotal = tablaOrdenesServicios.getValueAt(filaSeleccionada, 5).toString();
+
+File archivo = new File("orden_servicio.txt");
+if (!archivo.exists()) {
+    JOptionPane.showMessageDialog(this, "El archivo de órdenes no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+List<String> lineasActualizadas = new ArrayList<>();
+boolean modificada = false;
+
+try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+    String linea;
+    while ((linea = br.readLine()) != null) {
+        if (linea.startsWith(idOrden + ",")) {
+            String nuevaLinea = idOrden + "," + cliente + "," + vehiculo + "," + fechaIngreso + "," + fechaEntrega + "," + costoTotal;
+            lineasActualizadas.add(nuevaLinea);
+            modificada = true;
+        } else {
+            lineasActualizadas.add(linea);
+        }
+    }
+} catch (IOException e) {
+    JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+if (!modificada) {
+    JOptionPane.showMessageDialog(this, "No se encontró la orden con ID: " + idOrden, "Información", JOptionPane.INFORMATION_MESSAGE);
+    return;
+}
+
+try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+    for (String l : lineasActualizadas) {
+        bw.write(l);
+        bw.newLine();
+    }
+    JOptionPane.showMessageDialog(this, "Orden modificada correctamente en el archivo.");
+} catch (IOException e) {
+    JOptionPane.showMessageDialog(this, "Error al escribir en el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+// 🔄 Actualizar la tabla para mostrar los cambios
+DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
+modelo.setRowCount(0); // Limpiar tabla
+
+try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+    String linea;
+    while ((linea = br.readLine()) != null) {
+        String[] datos = linea.split(",");
+        if (datos.length >= 6) {
+            modelo.addRow(new Object[]{
+                datos[0], // idOrden
+                datos[1], // cliente
+                datos[2], // vehiculo
+                datos[3], // fechaIngreso
+                datos[4], // fechaEntrega
+                datos[5]  // costoTotal
+            });
+        }
+    }
+} catch (IOException e) {
+    JOptionPane.showMessageDialog(this, "Error al recargar la tabla: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}
         
-         int filaSeleccionada = tablaOrdenesServicios.getSelectedRow();
-
-    if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar una fila de la tabla para modificar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    String idOrden = tablaOrdenesServicios.getValueAt(filaSeleccionada, 0).toString();
-    String cliente = tablaOrdenesServicios.getValueAt(filaSeleccionada, 1).toString();
-    String vehiculo = tablaOrdenesServicios.getValueAt(filaSeleccionada, 2).toString();
-    String fechaIngreso = tablaOrdenesServicios.getValueAt(filaSeleccionada, 3).toString();
-    String fechaEntrega = tablaOrdenesServicios.getValueAt(filaSeleccionada, 4).toString();
-    String costoTotal = tablaOrdenesServicios.getValueAt(filaSeleccionada, 5).toString();
-
-    File archivo = new File("orden_servicio.txt");
-    if (!archivo.exists()) {
-        JOptionPane.showMessageDialog(this, "El archivo de órdenes no existe.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    List<String> lineasActualizadas = new ArrayList<>();
-    boolean modificada = false;
-
-    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-        String linea;
-        while ((linea = br.readLine()) != null) {
-            if (linea.startsWith(idOrden + ",")) {
-                String nuevaLinea = idOrden + "," + cliente + "," + vehiculo + "," + fechaIngreso + "," + fechaEntrega + "," + costoTotal;
-                lineasActualizadas.add(nuevaLinea);
-                modificada = true;
-            } else {
-                lineasActualizadas.add(linea);
-            }
-        }
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    if (!modificada) {
-        JOptionPane.showMessageDialog(this, "No se encontró la orden con ID: " + idOrden, "Información", JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
-
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
-        for (String l : lineasActualizadas) {
-            bw.write(l);
-            bw.newLine();
-        }
-        JOptionPane.showMessageDialog(this, "Orden modificada correctamente en el archivo.");
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al escribir en el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        
     }//GEN-LAST:event_btnModificarOrdenActionPerformed
 
     private void btnCerrarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarOrdenActionPerformed
