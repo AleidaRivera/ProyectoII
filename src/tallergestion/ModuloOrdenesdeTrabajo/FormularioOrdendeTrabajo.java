@@ -408,20 +408,34 @@ public class FormularioOrdendeTrabajo extends javax.swing.JPanel {
     }
 
     private String generarNumeroOrden() {
-          int contador = 1;
-    File archivo = new File("ordenes.txt");
-    if (archivo.exists()) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                contador++;
+    String archivo = "orden_servicio.txt";
+    int ultimoNumero = 0;
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            if (!linea.trim().isEmpty()) {
+                String[] partes = linea.split(",");
+                if (partes.length > 0 && partes[0].startsWith("ORD")) {
+                    String numeroStr = partes[0].substring(3); 
+                    try {
+                        int numero = Integer.parseInt(numeroStr);
+                        if (numero > ultimoNumero) {
+                            ultimoNumero = numero;
+                        }
+                    } catch (NumberFormatException e) {
+                       
+                    }
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+    } catch (IOException e) {
+     
     }
-    return String.format("ORD%03d", contador);
-    }
+
+    int nuevoNumero = ultimoNumero + 1;
+    return String.format("ORD%03d", nuevoNumero); 
+}
 
     private void cargarClientes() {
         comboClientes.removeAllItems();

@@ -126,8 +126,8 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarOrdenActionPerformed
-        
-         int filaSeleccionada = tablaOrdenesServicios.getSelectedRow();
+    
+    int filaSeleccionada = tablaOrdenesServicios.getSelectedRow();
 
     if (filaSeleccionada == -1) {
         JOptionPane.showMessageDialog(this, "Debe seleccionar una fila de la tabla para modificar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -136,10 +136,10 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
     String idOrden = tablaOrdenesServicios.getValueAt(filaSeleccionada, 0).toString();
     String cliente = tablaOrdenesServicios.getValueAt(filaSeleccionada, 1).toString();
-    String vehiculo = tablaOrdenesServicios.getValueAt(filaSeleccionada, 2).toString();
+    String descripcionVehiculo = tablaOrdenesServicios.getValueAt(filaSeleccionada, 2).toString(); // vehículo es la descripción
     String fechaIngreso = tablaOrdenesServicios.getValueAt(filaSeleccionada, 3).toString();
     String fechaEntrega = tablaOrdenesServicios.getValueAt(filaSeleccionada, 4).toString();
-    String costoTotal = tablaOrdenesServicios.getValueAt(filaSeleccionada, 5).toString();
+    String costoTotal = tablaOrdenesServicios.getValueAt(filaSeleccionada, 6).toString();
 
     File archivo = new File("orden_servicio.txt");
     if (!archivo.exists()) {
@@ -154,9 +154,15 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         String linea;
         while ((linea = br.readLine()) != null) {
             if (linea.startsWith(idOrden + ",")) {
-                String nuevaLinea = idOrden + "," + cliente + "," + vehiculo + "," + fechaIngreso + "," + fechaEntrega + "," + costoTotal;
-                lineasActualizadas.add(nuevaLinea);
-                modificada = true;
+                String[] partes = linea.split(",", 7); 
+                if (partes.length == 7) {
+                    String servicios = partes[3]; 
+                    String nuevaLinea = idOrden + "," + cliente + "," + descripcionVehiculo + "," + servicios + "," + fechaIngreso + "," + fechaEntrega + "," + costoTotal;
+                    lineasActualizadas.add(nuevaLinea);
+                    modificada = true;
+                } else {
+                    lineasActualizadas.add(linea); 
+                }
             } else {
                 lineasActualizadas.add(linea);
             }
@@ -179,6 +185,32 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Orden modificada correctamente en el archivo.");
     } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Error al escribir en el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+   
+    DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
+    modelo.setRowCount(0);
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",", 7);
+            if (datos.length == 7) {
+                String descripcionServicios = datos[3].replace(";", ", ");
+                modelo.addRow(new Object[]{
+                    datos[0], 
+                    datos[1], 
+                    datos[2], 
+                    datos[4],  
+                    datos[5],  
+                    "Activo", 
+                    datos[6]   
+                });
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al recargar la tabla: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnModificarOrdenActionPerformed
 

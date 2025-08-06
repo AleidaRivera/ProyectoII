@@ -1,6 +1,9 @@
+<<<<<<< HEAD
+=======
 ORD001,1,Mecanica,Mecanica General,10.000,Mecanica,Activo
 SERV001,2,Pintura,pintura ecomica,10.000,Pintura,Activo
 SERV001,4,Cambio de Llantas,Pital,15000,Cambio de Llantas,Activo
 SERV001,5,Otros,Limpieza profunda,12000,Otros,Activo
 SERV001,5,Otros,Limpieza profunda,12000,Otros,Activo
 SERV001,5,Otros,Limpieza profunda,12000,Otros,Activo
+>>>>>>> f8d24829b13884e2bdf18493ec9996c1e59a132e
