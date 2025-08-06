@@ -28,29 +28,32 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         btnBuscarOrden = new javax.swing.JButton();
         txtNumeroOrden = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaOrdenesServicios = new javax.swing.JTable();
-        jPanel4 = new javax.swing.JPanel();
-        btnModificarOrden = new javax.swing.JButton();
         btnCerrarOrden = new javax.swing.JButton();
+        btnModificarOrden = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Orden de trabajo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar ordenes por criterio", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 2, 3));
+        jPanel4.setLayout(new java.awt.CardLayout());
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 233, 543, 132));
 
+        btnBuscarOrden.setBackground(new java.awt.Color(0, 153, 153));
+        btnBuscarOrden.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscarOrden.setText("Buscar");
         btnBuscarOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarOrdenActionPerformed(evt);
             }
         });
-        jPanel2.add(btnBuscarOrden);
-        jPanel2.add(txtNumeroOrden);
+        jPanel1.add(btnBuscarOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 63, 100, 30));
+        jPanel1.add(txtNumeroOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(228, 62, 210, 30));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultado de busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
@@ -84,55 +87,41 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tablaOrdenesServicios);
 
-        btnModificarOrden.setBackground(new java.awt.Color(102, 255, 204));
-        btnModificarOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnModificarOrden.setText("Modificar Orden");
-        btnModificarOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarOrdenActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnModificarOrden);
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 110, 609, 191));
 
         btnCerrarOrden.setBackground(new java.awt.Color(255, 102, 102));
         btnCerrarOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCerrarOrden.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrarOrden.setText("Cerrar Orden");
         btnCerrarOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCerrarOrdenActionPerformed(evt);
             }
         });
-        jPanel4.add(btnCerrarOrden);
+        jPanel1.add(btnCerrarOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 319, 306, 46));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        btnModificarOrden.setBackground(new java.awt.Color(102, 255, 204));
+        btnModificarOrden.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnModificarOrden.setForeground(new java.awt.Color(255, 255, 255));
+        btnModificarOrden.setText("Modificar Orden");
+        btnModificarOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarOrdenActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnModificarOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(323, 319, 306, 46));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 734, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -290,6 +279,7 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
 
     private void btnBuscarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarOrdenActionPerformed
    
+
     String idBusqueda = txtNumeroOrden.getText().trim();
     String rutaArchivo = "orden_servicio.txt";
     DefaultTableModel modelo = (DefaultTableModel) tablaOrdenesServicios.getModel();
@@ -318,6 +308,8 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
             String fechaEntrega = partes[5].trim();
             String costoTotal = partes[6].trim();
             String estado = "Activo";
+            
+            
 
             String descripcionServicios = servicios.replace(";", ", ");
 
@@ -350,7 +342,6 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     private javax.swing.JButton btnCerrarOrden;
     private javax.swing.JButton btnModificarOrden;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaOrdenesServicios;

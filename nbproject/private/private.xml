@@ -3,7 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/rronn/Desktop/Taller/ProyectoII/src/tallergestion/ModuloOrdenesdeTrabajo/ConsultaOrdendeTrabajo.java</file>
+=======
+            <file>file:/C:/Users/50650/ProyectoII/src/tallergestion/moduloVehiculos/FormularioVehiculo.java</file>
+            <file>file:/C:/Users/50650/ProyectoII/src/tallergestion/moduloVehiculos/ConsultaVehiculos.java</file>
+            <file>file:/C:/Users/50650/ProyectoII/src/tallergestion/moduloServicios/FormularioServicio.java</file>
+            <file>file:/C:/Users/50650/ProyectoII/src/tallergestion/moduloServicios/AsociarServicioOrden.java</file>
+            <file>file:/C:/Users/50650/ProyectoII/src/tallergestion/ModuloOrdenesdeTrabajo/FormularioOrdendeTrabajo.java</file>
+            <file>file:/C:/Users/50650/ProyectoII/src/tallergestion/ModuloOrdenesdeTrabajo/ConsultaOrdendeTrabajo.java</file>
+>>>>>>> f8d24829b13884e2bdf18493ec9996c1e59a132e
         </group>
     </open-files>
 </project-private>

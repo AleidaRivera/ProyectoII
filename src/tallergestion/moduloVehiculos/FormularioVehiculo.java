@@ -80,6 +80,7 @@ public class FormularioVehiculo extends javax.swing.JPanel {
 
         btnGuardar.setBackground(new java.awt.Color(0, 255, 204));
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +91,7 @@ public class FormularioVehiculo extends javax.swing.JPanel {
 
         btnCerrar.setBackground(new java.awt.Color(255, 51, 51));
         btnCerrar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

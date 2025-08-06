@@ -1,10 +1,10 @@
-//package tallergestion.vista;
+
 package tallergestion.vista;
 
 
-//import vista.Vista;
+
 import javax.swing.SwingUtilities;
-//import vista.Vista;
+
 
 public class TallerGestion {
 
