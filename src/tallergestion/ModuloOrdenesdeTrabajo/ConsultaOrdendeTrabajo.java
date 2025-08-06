@@ -137,9 +137,9 @@ public class ConsultaOrdendeTrabajo extends javax.swing.JPanel {
     private void btnModificarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarOrdenActionPerformed
     
   
-        int filaSeleccionada = tablaOrdenesServicios.getSelectedRow();
+    int filaSeleccionada = tablaOrdenesServicios.getSelectedRow();
 
-if (filaSeleccionada == -1) {
+    if (filaSeleccionada == -1) {
     JOptionPane.showMessageDialog(this, "Debe seleccionar una fila de la tabla para modificar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
     return;
 }
@@ -297,7 +297,7 @@ try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
         if (partes.length >= 7) {
             String numeroOrden = partes[0].trim();
 
-            // Si se ingresó un número de orden y no coincide, lo salta
+            
             if (!idBusqueda.isEmpty() && !numeroOrden.equalsIgnoreCase(idBusqueda)) {
                 continue;
             }
